@@ -1,0 +1,295 @@
+{{ 'section-consignment.css' | asset_url | stylesheet_tag }}
+
+<div class="consignment-section" style="background-color: {{ section.settings.background_color }}; color: {{ section.settings.text_color }}; padding-top: {{ section.settings.padding_top }}px; padding-bottom: {{ section.settings.padding_bottom }}px;">
+  <div class="page-width">
+    {% if section.settings.image != blank %}
+      <div class="consignment-grid {% if section.settings.layout == 'image_right' %}grid-reverse{% endif %}">
+        <div class="consignment-image">
+          {{
+            section.settings.image
+            | image_url: width: 1000
+            | image_tag:
+              loading: 'lazy',
+              class: 'consignment-img',
+              alt: section.settings.image.alt | default: section.settings.heading
+          }}
+        </div>
+        <div class="consignment-content">
+          {% if section.settings.heading != blank %}
+            <h2 class="consignment-heading">{{ section.settings.heading | escape }}</h2>
+          {% endif %}
+          <div class="consignment-description rte">
+            {{ section.settings.description }}
+          </div>
+          {% if section.settings.button_text != blank and section.settings.button_link != blank %}
+            <a href="{{ section.settings.button_link }}" class="consignment-button">
+              {{- section.settings.button_text | escape -}}
+            </a>
+          {% endif %}
+        </div>
+      </div>
+    {% else %}
+      <div class="consignment-content-single">
+        {% if section.settings.heading != blank %}
+          <h2 class="consignment-heading">{{ section.settings.heading | escape }}</h2>
+        {% endif %}
+        <div class="consignment-description rte">
+          {{ section.settings.description }}
+        </div>
+        {% if section.settings.button_text != blank and section.settings.button_link != blank %}
+          <a href="{{ section.settings.button_link }}" class="consignment-button">
+            {{- section.settings.button_text | escape -}}
+          </a>
+        {% endif %}
+      </div>
+    {% endif %}
+  </div>
+</div>
+
+<style>
+  .consignment-section {
+    width: 100%;
+    overflow: hidden;
+  }
+
+  .consignment-section .page-width {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 1.5rem;
+  }
+
+  /* Grid layout (desktop) */
+  .consignment-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 3rem;
+    align-items: center;
+  }
+
+  /* Order control for desktop */
+  .consignment-grid .consignment-content {
+    order: 1;
+  }
+
+  .consignment-grid .consignment-image {
+    order: 2;
+  }
+
+  .consignment-grid.grid-reverse .consignment-content {
+    order: 2;
+  }
+
+  .consignment-grid.grid-reverse .consignment-image {
+    order: 1;
+  }
+
+  /* Image styling */
+  .consignment-img {
+    width: 100%;
+    height: auto;
+    object-fit: cover;
+    border-radius: 1rem;
+    display: block;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.05);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  }
+
+  .consignment-img:hover {
+    transform: scale(1.01);
+    box-shadow: 0 12px 28px rgba(0, 0, 0, 0.1);
+  }
+
+  /* Content styling */
+  .consignment-heading {
+    font-size: 2.5rem;
+    font-weight: 500;
+    line-height: 1.2;
+    margin: 0 0 1.25rem 0;
+    letter-spacing: -0.02em;
+    color: currentColor;
+  }
+
+  .consignment-description {
+    font-size: 1rem;
+    line-height: 1.6;
+    margin-bottom: 1.75rem;
+  }
+
+  .consignment-description p {
+    margin-bottom: 1rem;
+  }
+
+  .consignment-description p:last-child {
+    margin-bottom: 0;
+  }
+
+  /* Button style */
+  .consignment-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background: transparent;
+    border: 1px solid currentColor;
+    padding: 0.75rem 2rem;
+    font-size: 0.9rem;
+    font-weight: 500;
+    text-decoration: none;
+    transition: all 0.25s ease;
+    border-radius: 2rem;
+    letter-spacing: 0.03em;
+    color: currentColor;
+  }
+
+  .consignment-button:hover {
+    background-color: currentColor;
+    color: {{ section.settings.background_color }};
+    border-color: currentColor;
+  }
+
+  /* Single column (when no image) */
+  .consignment-content-single {
+    max-width: 800px;
+    margin: 0 auto;
+    text-align: center;
+  }
+
+  .consignment-content-single .consignment-description {
+    text-align: center;
+  }
+
+  /* Responsive: mobile */
+  @media screen and (max-width: 749px) {
+    .consignment-grid {
+      grid-template-columns: 1fr;
+      gap: 2rem;
+    }
+
+    .consignment-grid .consignment-content,
+    .consignment-grid .consignment-image,
+    .consignment-grid.grid-reverse .consignment-content,
+    .consignment-grid.grid-reverse .consignment-image {
+      order: unset;
+    }
+
+    .consignment-heading {
+      font-size: 1.8rem;
+      margin-bottom: 1rem;
+    }
+
+    .consignment-description {
+      font-size: 0.95rem;
+    }
+
+    .consignment-button {
+      padding: 0.65rem 1.5rem;
+      font-size: 0.85rem;
+    }
+
+    .consignment-section .page-width {
+      padding: 0 1.2rem;
+    }
+  }
+
+  @media screen and (min-width: 750px) and (max-width: 989px) {
+    .consignment-grid {
+      gap: 2rem;
+    }
+    .consignment-heading {
+      font-size: 2rem;
+    }
+  }
+</style>
+
+{% schema %}
+{
+  "name": "Consignment & Collab",
+  "settings": [
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Consignment & Collaboration"
+    },
+    {
+      "type": "richtext",
+      "id": "description",
+      "label": "Description",
+      "default": "<p>M3030, A4 paperback artbook, journals and notebooks whose edges align with its return of colour. craftsmanship and storytelling.</p><p>If you are interested in consigning your work or exploring a collaboration, we invite you to connect.</p>"
+    },
+    {
+      "type": "image_picker",
+      "id": "image",
+      "label": "Image (optional)"
+    },
+    {
+      "type": "select",
+      "id": "layout",
+      "label": "Image position",
+      "options": [
+        { "value": "image_left", "label": "Left" },
+        { "value": "image_right", "label": "Right" }
+      ],
+      "default": "image_left",
+      "info": "Only applies when an image is selected"
+    },
+    {
+      "type": "header",
+      "content": "Colors & Spacing"
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Background color",
+      "default": "#faf9f7"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text color",
+      "default": "#1a1a1a"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "label": "Padding top",
+      "min": 0,
+      "max": 120,
+      "step": 4,
+      "default": 48,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "label": "Padding bottom",
+      "min": 0,
+      "max": 120,
+      "step": 4,
+      "default": 48,
+      "unit": "px"
+    },
+    {
+      "type": "header",
+      "content": "Button"
+    },
+    {
+      "type": "text",
+      "id": "button_text",
+      "label": "Button label",
+      "default": "Start a Conversation"
+    },
+    {
+      "type": "url",
+      "id": "button_link",
+      "label": "Button link",
+      "default": "/pages/contact"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Consignment & Collaboration",
+      "category": "Text"
+    }
+  ]
+}
+{% endschema %}
