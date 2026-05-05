@@ -25,6 +25,22 @@
         "secondary_button_link": "#"
       }
     },
+    "about_company_NPNHGQ": {
+      "type": "about-company",
+      "name": "About Brand Story",
+      "settings": {
+        "heading": "About Mobolaji",
+        "description": "<p>MOBOLAJI is a curated world of art, jewellery and clothing.<br/><br/>Founded by , MOBOLAJI brings together selected works, consignments and original in-house design across three connected worlds: visual art, adornment and dress.<br/><br/>The brand is built on refinement, cultural depth and considered taste. Each piece is chosen for its presence, feeling and ability to live beyond trend — whether that is an artwork for a room, jewellery with character, or clothing designed with intention.<br/><br/>MOBOLAJI is not simply a store. It is a house of selection.<br/><br/>A place for objects with beauty, story and permanence.</p>",
+        "image": "shopify://shop_images/Frame_10.png",
+        "layout": "image_left",
+        "background_color": "#f6f1e8",
+        "text_color": "#000000",
+        "padding_top": 100,
+        "padding_bottom": 100,
+        "button_text": "",
+        "button_link": "shopify://collections/all"
+      }
+    },
     "categories_sections_i9hLdP": {
       "type": "categories-sections",
       "blocks": {
@@ -129,6 +145,7 @@
   },
   "order": [
     "lanai_hero_CDYPij",
+    "about_company_NPNHGQ",
     "categories_sections_i9hLdP",
     "custom_featured_collection_AW8RnK",
     "brand_promise_aQT47f"
