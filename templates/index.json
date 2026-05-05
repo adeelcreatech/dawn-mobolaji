@@ -30,15 +30,17 @@
         "card_ztjhhp": {
           "type": "card",
           "settings": {
-            "card_label": "Poolside Retreat",
-            "card_link": "#"
+            "card_image": "shopify://shop_images/Frame_15.png",
+            "card_label": "Jewellery",
+            "card_link": "shopify://collections/jewellery"
           }
         },
         "card_UT96z8": {
           "type": "card",
           "settings": {
-            "card_label": "Evening Entertaining",
-            "card_link": "#"
+            "card_image": "shopify://shop_images/Frame_14.png",
+            "card_label": "Art",
+            "card_link": "shopify://collections/art"
           }
         },
         "card_xWQMrL": {
