@@ -58,7 +58,6 @@
     padding: 0 1.5rem;
   }
 
-  /* Grid layout (desktop) */
   .consignment-grid {
     display: grid;
     grid-template-columns: 1fr 1fr;
@@ -66,7 +65,6 @@
     align-items: center;
   }
 
-  /* Order control for desktop */
   .consignment-grid .consignment-content {
     order: 1;
   }
@@ -83,7 +81,6 @@
     order: 1;
   }
 
-  /* Image styling */
   .consignment-img {
     width: 100%;
     height: auto;
@@ -99,7 +96,6 @@
     box-shadow: 0 12px 28px rgba(0, 0, 0, 0.1);
   }
 
-  /* Content styling */
   .consignment-heading {
     font-size: 2.5rem;
     font-weight: 500;
@@ -123,7 +119,6 @@
     margin-bottom: 0;
   }
 
-  /* Button style */
   .consignment-button {
     display: inline-flex;
     align-items: center;
@@ -146,7 +141,6 @@
     border-color: currentColor;
   }
 
-  /* Single column (when no image) */
   .consignment-content-single {
     max-width: 800px;
     margin: 0 auto;
@@ -157,34 +151,28 @@
     text-align: center;
   }
 
-  /* Responsive: mobile */
   @media screen and (max-width: 749px) {
     .consignment-grid {
       grid-template-columns: 1fr;
       gap: 2rem;
     }
-
     .consignment-grid .consignment-content,
     .consignment-grid .consignment-image,
     .consignment-grid.grid-reverse .consignment-content,
     .consignment-grid.grid-reverse .consignment-image {
       order: unset;
     }
-
     .consignment-heading {
       font-size: 1.8rem;
       margin-bottom: 1rem;
     }
-
     .consignment-description {
       font-size: 0.95rem;
     }
-
     .consignment-button {
       padding: 0.65rem 1.5rem;
       font-size: 0.85rem;
     }
-
     .consignment-section .page-width {
       padding: 0 1.2rem;
     }
@@ -281,8 +269,7 @@
     {
       "type": "url",
       "id": "button_link",
-      "label": "Button link",
-      "default": "/pages/contact"
+      "label": "Button link"
     }
   ],
   "presets": [
