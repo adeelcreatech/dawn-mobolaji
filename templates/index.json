@@ -24,18 +24,6 @@
         "secondary_button_link": "#"
       }
     },
-    "custom_featured_collection_AW8RnK": {
-      "type": "custom-featured-collection",
-      "name": "Custom Collection",
-      "settings": {
-        "heading": "Featured Collection",
-        "collection": "shop",
-        "products_to_show": 8,
-        "show_cta": true,
-        "secondary_button_label": "Shop All Collections",
-        "secondary_button_link": "#"
-      }
-    },
     "categories_sections_i9hLdP": {
       "type": "categories-sections",
       "blocks": {
@@ -72,6 +60,18 @@
         "cat_grid_subtitle": "Lanai Lifestyle brings together premium outdoor furnishings and elevated design for poolside spaces, lanais, and open-air living that feels both relaxed and refined.",
         "cat_grid_btn_label": "Shop by Space",
         "cat_grid_btn_link": ""
+      }
+    },
+    "custom_featured_collection_AW8RnK": {
+      "type": "custom-featured-collection",
+      "name": "Custom Collection",
+      "settings": {
+        "heading": "Featured Collection",
+        "collection": "shop",
+        "products_to_show": 8,
+        "show_cta": true,
+        "secondary_button_label": "Shop All Collections",
+        "secondary_button_link": "#"
       }
     },
     "brand_promise_aQT47f": {
@@ -125,8 +125,8 @@
   },
   "order": [
     "lanai_hero_CDYPij",
-    "custom_featured_collection_AW8RnK",
     "categories_sections_i9hLdP",
+    "custom_featured_collection_AW8RnK",
     "brand_promise_aQT47f"
   ]
 }
