@@ -125,10 +125,27 @@
         "heading_color": "#3f3a36",
         "heading_size": 16
       }
+    },
+    "about_company_NPNHGQ": {
+      "type": "about-company",
+      "name": "About Brand Story",
+      "settings": {
+        "heading": "About Mobolaji",
+        "description": "<p>MOBOLAJ is a curated world of art, jewellery and clothing.</p><p>Founded by Mobolaji in 2016, Mobolaji designs contemporary collections that are inspired by the latest trends. Our collection is designed to reflect the modern woman’s lifestyle and values. We believe that fashion should be fun, stylish and comfortable. Mobolaji’s designs are made with love and care, and we hope that you will fall in love with them too.</p><p>The brand is built on refinement, cultural depth and craftsmanship. Each piece is crafted with precision and attention to detail. Mobolaji’s designs are not only beautiful but also functional. They are perfect for everyday wear or special occasions. Mobolaji’s collections are available in our online store and at select boutiques around the world.</p><p>A place for objects with beauty, style and personality.</p>",
+        "image": "shopify://shop_images/Frame_10.png",
+        "layout": "image_left",
+        "background_color": "#ffffff",
+        "text_color": "#000000",
+        "padding_top": 48,
+        "padding_bottom": 48,
+        "button_text": "",
+        "button_link": "shopify://collections/all"
+      }
     }
   },
   "order": [
     "lanai_hero_CDYPij",
+    "about_company_NPNHGQ",
     "categories_sections_i9hLdP",
     "custom_featured_collection_AW8RnK",
     "brand_promise_aQT47f"
