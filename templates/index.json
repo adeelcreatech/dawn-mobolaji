@@ -14,13 +14,14 @@
       "name": "Lanai Header",
       "settings": {
         "video_url": "",
+        "poster_image": "shopify://shop_images/Hero.png",
         "hero_height": 740,
         "overlay_opacity": 30,
-        "heading": "Live Outside Beautifully.",
-        "description": "Curated outdoor furniture, poolside pieces, and refined accents for elevated open-air living.",
-        "primary_button_label": "Shop the Collection",
+        "heading": "A Curated World of Art, Jewellery & Clothing.",
+        "description": "",
+        "primary_button_label": "",
         "primary_button_link": "#",
-        "secondary_button_label": "Explore Inspiration",
+        "secondary_button_label": "Enter the Studio",
         "secondary_button_link": "#"
       }
     },
