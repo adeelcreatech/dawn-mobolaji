@@ -1,0 +1,141 @@
+{% comment %}
+  Section: Categories Sections
+  File: sections/categories-sections.liquid
+{% endcomment %}
+
+<section class="cat-section">
+    <div class="cat-sec-box container-shell">
+
+        <div class="cat-header">
+            {%- if section.settings.cat_grid_title != blank -%}
+                <h2 class="cat-title">{{ section.settings.cat_grid_title }}</h2>
+            {%- endif -%}
+            {%- if section.settings.cat_grid_subtitle != blank -%}
+                <p class="cat-subtitle">{{ section.settings.cat_grid_subtitle }}</p>
+            {%- endif -%}
+        </div>
+
+        <div class="cat-cards">
+            {%- for block in section.blocks -%}
+                {%- if block.type == 'card' -%}
+                    <div class="cat-card">
+                        <div class="cat-card-img-wrap">
+                            {%- if block.settings.card_image != blank -%}
+                                <a href="{{ block.settings.card_link | default: '#' }}" {{ block.shopify_attributes }}>
+                                    <img src="{{ block.settings.card_image | image_url: width: 700 }}" alt="{{ block.settings.card_image.alt | default: block.settings.card_label | escape }}" loading="lazy" width="700" height="560"/>
+                                </a>
+                            {%- else -%}
+                                {{ 'lifestyle-1' | placeholder_svg_tag: 'cat-placeholder' }}
+                            {%- endif -%}
+                        </div>
+                        {%- if block.settings.card_label != blank -%}
+                            <h3 class="cat-card-label">{{ block.settings.card_label }}</h3>
+                        {%- endif -%}
+                    </div>
+                {%- endif -%}
+            {%- endfor -%}
+        </div>
+
+        {%- if section.settings.cat_grid_btn_label != blank -%}
+            <div class="cat-cta-wrap">
+                <a class="ternary_btn" href="{{ section.settings.cat_grid_btn_link | default: '#' }}">
+                    {{ section.settings.cat_grid_btn_label }}
+                </a>
+            </div>
+        {%- endif -%}
+
+    </div>
+</section>
+
+{% schema %}
+{
+  "name": "Categories Grid Section",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Section Header"
+    },
+    {
+      "type": "text",
+      "id": "cat_grid_title",
+      "label": "Heading",
+      "default": "Designed for the Way You Gather"
+    },
+    {
+      "type": "textarea",
+      "id": "cat_grid_subtitle",
+      "label": "Subheading",
+      "default": "Lanai Lifestyle brings together premium outdoor furnishings and elevated design for poolside spaces, lanais, and open-air living that feels both relaxed and refined."
+    },
+    {
+      "type": "header",
+      "content": "Button"
+    },
+    {
+      "type": "text",
+      "id": "cat_grid_btn_label",
+      "label": "Button Label",
+      "default": "Shop by Space"
+    },
+    {
+      "type": "url",
+      "id": "cat_grid_btn_link",
+      "label": "Button Link"
+    },
+    {
+      "type": "header",
+      "content": "Layout"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "card",
+      "name": "Category Grid Card",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "card_image",
+          "label": "Card Image"
+        },
+        {
+          "type": "text",
+          "id": "card_label",
+          "label": "Card Label",
+          "default": "Poolside Retreat"
+        },
+        {
+          "type": "url",
+          "id": "card_link",
+          "label": "Card Link"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Categories Grid Section",
+      "blocks": [
+        {
+          "type": "card",
+          "settings": {
+            "card_label": "Poolside Retreat"
+          }
+        },
+        {
+          "type": "card",
+          "settings": {
+            "card_label": "Evening Entertaining"
+          }
+        },
+        {
+          "type": "card",
+          "settings": {
+            "card_label": "Lanai Lounge"
+          }
+        }
+      ]
+    }
+  ],
+  "max_blocks": 6
+}
+{% endschema %}

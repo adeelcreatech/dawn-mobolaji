@@ -1,0 +1,774 @@
+{{ 'collection-lanai.css' | asset_url | stylesheet_tag }}
+
+{%- comment -%}
+=================================================================
+  LANAI LIFESTYLE — Collection Section
+  File: sections/collection-lanai.liquid
+
+  HOW FILTERS WORK:
+  ─────────────────
+  1. AVAILABILITY  → Uses Shopify native filter.v.availability
+     • "1" = In Stock, "0" = Out of Stock
+     • Works automatically — no setup needed
+
+  2. COLLECTION    → Direct redirect to collection URLs
+
+  3. MATERIAL (TAGS) → Uses filter.p.tag
+
+  4. MORE FILTERS DRAWER → Price Range + other filters
+=================================================================
+{%- endcomment -%}
+
+{%- assign cols_desktop = section.settings.columns_desktop | default: '3' -%}
+{%- assign cols_tablet  = section.settings.columns_tablet  | default: '2' -%}
+{%- assign cols_mobile  = section.settings.columns_mobile  | default: '1' -%}
+
+{%- comment -%} Read current URL filter values {%- endcomment -%}
+{%- assign active_avail      = request.parameters['filter.v.availability'] -%}
+{%- assign active_collection = request.parameters['filter.p.collection'] -%}
+{%- assign active_tag        = request.parameters['filter.p.tag'] -%}
+{%- assign active_price_min  = request.parameters['filter.v.price.gte'] -%}
+{%- assign active_price_max  = request.parameters['filter.v.price.lte'] -%}
+{%- assign current_sort      = request.parameters['sort_by'] | default: collection.default_sort_by -%}
+
+<style>
+  #cl-section-{{ section.id }} {
+    --cl-cols-desktop: {{ cols_desktop }};
+    --cl-cols-tablet:  {{ cols_tablet }};
+    --cl-cols-mobile:  {{ cols_mobile }};
+  }
+</style>
+
+<div class="cl-page" id="cl-section-{{ section.id }}">
+
+<div class="cl-filter-bar">
+  <form id="clFilterForm" class="cl-filter-form" method="GET" action="{{ collection.url }}">
+
+    {%- comment -%} Preserve sort_by if already set {%- endcomment -%}
+    {%- if current_sort != blank and current_sort != collection.default_sort_by -%}
+      <input type="hidden" name="sort_by" value="{{ current_sort }}">
+    {%- endif -%}
+
+    {%- comment -%}════ 1. SORT BY ════{%- endcomment -%}
+    <div class="cl-filter-group cl-sort-group">
+      <label class="cl-filter-label" for="clSortBy">Sort by:</label>
+      <div class="cl-select-wrap">
+        <select id="clSortBy" name="sort_by" class="cl-native-select" onchange="clSubmitSort(this)">
+          {%- for opt in collection.sort_options -%}
+            <option value="{{ opt.value }}"{% if opt.value == current_sort %} selected{% endif %}>{{ opt.name }}</option>
+          {%- endfor -%}
+        </select>
+        <span class="cl-chevron">&#9660;</span>
+      </div>
+    </div>
+
+    <div class="cl-divider"></div>
+
+    {%- comment -%}════ 2. VIEW TOGGLE ════{%- endcomment -%}
+    <div class="cl-filter-group cl-view-group">
+      <span class="cl-filter-label">View:</span>
+      <div class="cl-view-btns">
+        <button type="button" class="cl-view-btn active" id="btnGrid" onclick="clSetView('grid')" aria-label="Grid">
+          <svg viewBox="0 0 20 20" fill="currentColor" width="16" height="16">
+            <rect x="1" y="1" width="8" height="8" rx="1"/><rect x="11" y="1" width="8" height="8" rx="1"/>
+            <rect x="1" y="11" width="8" height="8" rx="1"/><rect x="11" y="11" width="8" height="8" rx="1"/>
+          </svg>
+        </button>
+        <button type="button" class="cl-view-btn" id="btnList" onclick="clSetView('list')" aria-label="List">
+          <svg viewBox="0 0 20 20" fill="currentColor" width="16" height="16">
+            <rect x="1" y="2" width="18" height="3" rx="1"/>
+            <rect x="1" y="8.5" width="18" height="3" rx="1"/>
+            <rect x="1" y="15" width="18" height="3" rx="1"/>
+          </svg>
+        </button>
+      </div>
+    </div>
+
+    <div class="cl-divider"></div>
+
+    {%- comment -%}════ 3. AVAILABILITY FILTER (FIXED) ════
+      Uses filter.v.availability=1 for In Stock, filter.v.availability=0 for Out of Stock
+    {%- endcomment -%}
+    <div class="cl-filter-group cl-dropdown-group" id="dropAvail">
+      <span class="cl-filter-label">Availability:</span>
+      <button type="button" class="cl-dropdown-trigger" onclick="clToggleDrop('dropAvail')">
+        <span class="cl-filter-value">
+          {%- if active_avail == '1' -%}In Stock
+          {%- elsif active_avail == '0' -%}Out of Stock
+          {%- else -%}All
+          {%- endif -%}
+        </span>
+        <span class="cl-chevron">&#9660;</span>
+      </button>
+      <div class="cl-dropdown-panel">
+        <button type="button"
+          class="cl-drop-item{% unless active_avail == '1' or active_avail == '0' %} cl-drop-item--active{% endunless %}"
+          onclick="clSetAvailability('', this, 'dropAvail')">
+          All
+        </button>
+        <button type="button"
+          class="cl-drop-item{% if active_avail == '1' %} cl-drop-item--active{% endif %}"
+          onclick="clSetAvailability('1', this, 'dropAvail')">
+          In Stock
+        </button>
+        <button type="button"
+          class="cl-drop-item{% if active_avail == '0' %} cl-drop-item--active{% endif %}"
+          onclick="clSetAvailability('0', this, 'dropAvail')">
+          Out of Stock
+        </button>
+      </div>
+    </div>
+
+    <div class="cl-divider"></div>
+
+    {%- comment -%}════ 4. COLLECTION FILTER ════{%- endcomment -%}
+    {%- assign coll_pairs = section.settings.collection_options | split: ',' -%}
+    {%- assign current_coll_handle = collection.handle -%}
+    {%- assign all_coll_handle = section.settings.all_collection_handle | strip -%}
+    {%- assign is_all_active = false -%}
+    {%- if current_coll_handle == all_coll_handle or all_coll_handle == blank -%}
+      {%- assign is_all_active = true -%}
+    {%- endif -%}
+
+    <div class="cl-filter-group cl-dropdown-group" id="dropColl">
+      <span class="cl-filter-label">Collection:</span>
+      <button type="button" class="cl-dropdown-trigger" onclick="clToggleDrop('dropColl')">
+        <span class="cl-filter-value">
+          {%- if is_all_active -%}All{%- else -%}{{ collection.title }}{%- endif -%}
+        </span>
+        <span class="cl-chevron">&#9660;</span>
+      </button>
+      <div class="cl-dropdown-panel">
+        {%- assign all_url = '/collections/' | append: all_coll_handle -%}
+        {%- if all_coll_handle == blank -%}{%- assign all_url = '/collections/all' -%}{%- endif -%}
+        <a href="{{ all_url }}" class="cl-drop-item{% if is_all_active %} cl-drop-item--active{% endif %}">All</a>
+
+        {%- for pair in coll_pairs -%}
+          {%- assign pair_clean = pair | strip -%}
+          {%- assign pair_parts = pair_clean | split: '|' -%}
+          {%- assign coll_display = pair_parts[0] | strip -%}
+          {%- if pair_parts[1] -%}
+            {%- assign coll_handle = pair_parts[1] | strip -%}
+          {%- else -%}
+            {%- assign coll_handle = coll_display | handleize -%}
+          {%- endif -%}
+          {%- assign coll_url = '/collections/' | append: coll_handle -%}
+          {%- assign is_active = false -%}
+          {%- if current_coll_handle == coll_handle -%}{%- assign is_active = true -%}{%- endif -%}
+          <a href="{{ coll_url }}" class="cl-drop-item{% if is_active %} cl-drop-item--active{% endif %}">{{ coll_display }}</a>
+        {%- endfor -%}
+      </div>
+    </div>
+
+    <div class="cl-divider"></div>
+
+    {%- comment -%}════ 5. MATERIAL / TAG FILTER ════{%- endcomment -%}
+    {%- assign mat_filter = nil -%}
+    {%- for f in collection.filters -%}
+      {%- if f.label == 'Material' -%}
+        {%- assign mat_filter = f -%}
+        {%- break -%}
+      {%- endif -%}
+    {%- endfor -%}
+
+    {%- if mat_filter != nil -%}
+      {%- assign active_mat_fvs = mat_filter.values | where: 'active', true -%}
+      <div class="cl-filter-group cl-dropdown-group" id="dropMat">
+        <span class="cl-filter-label">Material:</span>
+        <button type="button" class="cl-dropdown-trigger" onclick="clToggleDrop('dropMat')">
+          <span class="cl-filter-value">
+            {%- if active_mat_fvs.size > 0 -%}
+              {{ active_mat_fvs.first.label }}{% if active_mat_fvs.size > 1 %} +{{ active_mat_fvs.size | minus: 1 }}{% endif %}
+            {%- else -%}All{%- endif -%}
+          </span>
+          <span class="cl-chevron">&#9660;</span>
+        </button>
+        <div class="cl-dropdown-panel cl-panel-checks">
+          <a href="{{ mat_filter.url_to_remove }}" class="cl-drop-item{% if active_mat_fvs.size == 0 %} cl-drop-item--active{% endif %}">All</a>
+          {%- for fv in mat_filter.values -%}
+            <label class="cl-drop-check">
+              <input type="checkbox" name="{{ fv.param_name }}" value="{{ fv.value }}" {% if fv.active %}checked{% endif %} onchange="document.getElementById('clFilterForm').submit()">
+              <span>{{ fv.label }}<em> ({{ fv.count }})</em></span>
+            </label>
+          {%- endfor -%}
+        </div>
+      </div>
+    {%- else -%}
+      {%- assign mat_tags = section.settings.material_tag_options | split: ',' -%}
+      <div class="cl-filter-group cl-dropdown-group" id="dropMat">
+        <span class="cl-filter-label">Material:</span>
+        <button type="button" class="cl-dropdown-trigger" onclick="clToggleDrop('dropMat')">
+          <span class="cl-filter-value">{%- if active_tag != blank -%}{{ active_tag }}{%- else -%}All{%- endif -%}</span>
+          <span class="cl-chevron">&#9660;</span>
+        </button>
+        <div class="cl-dropdown-panel">
+          <button type="button" class="cl-drop-item{% if active_tag == blank %} cl-drop-item--active{% endif %}" onclick="clSetTag('', this, 'dropMat')">All</button>
+          {%- for mt in mat_tags -%}
+            {%- assign mt_name = mt | strip -%}
+            <button type="button" class="cl-drop-item{% if active_tag == mt_name %} cl-drop-item--active{% endif %}" onclick="clSetTag('{{ mt_name | escape }}', this, 'dropMat')">{{ mt_name }}</button>
+          {%- endfor -%}
+        </div>
+      </div>
+    {%- endif -%}
+
+    <div class="cl-divider"></div>
+
+    {%- comment -%}════ 6. MORE FILTERS ════{%- endcomment -%}
+    <div class="cl-filter-group cl-more-group">
+      {%- assign total_active_count = 0 -%}
+      {%- for f in collection.filters -%}
+        {%- for fv in f.values -%}{%- if fv.active -%}{%- assign total_active_count = total_active_count | plus: 1 -%}{%- endif -%}{%- endfor -%}
+      {%- endfor -%}
+      {%- if active_avail != blank -%}{%- assign total_active_count = total_active_count | plus: 1 -%}{%- endif -%}
+      {%- if active_tag != blank -%}{%- assign total_active_count = total_active_count | plus: 1 -%}{%- endif -%}
+      <button type="button" class="cl-more-btn" onclick="clToggleDrawer()">
+        More Filters
+        {%- if total_active_count > 0 -%}<span class="cl-more-badge">{{ total_active_count }}</span>{%- endif -%}
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <line x1="4" y1="6" x2="20" y2="6"/><line x1="8" y1="12" x2="20" y2="12"/><line x1="12" y1="18" x2="20" y2="18"/>
+        </svg>
+      </button>
+    </div>
+
+  </form>
+
+  {%- comment -%}════ MORE FILTERS DRAWER ════{%- endcomment -%}
+  <div class="cl-drawer" id="clDrawer" aria-hidden="true">
+    <div class="cl-drawer-inner">
+      <div class="cl-drawer-header">
+        <h3 class="cl-drawer-title">All Filters</h3>
+        <button type="button" class="cl-drawer-close" onclick="clToggleDrawer()">&#10005;</button>
+      </div>
+
+      {%- assign any_active = false -%}
+      {%- for f in collection.filters -%}{%- for fv in f.values -%}{%- if fv.active -%}{%- assign any_active = true -%}{%- endif -%}{%- endfor -%}{%- endfor -%}
+      {%- if active_avail != blank or active_collection != blank or active_tag != blank or active_price_min != blank or active_price_max != blank -%}{%- assign any_active = true -%}{%- endif -%}
+
+      {%- if any_active -%}
+        <div class="cl-active-pills">
+          {%- for f in collection.filters -%}
+            {%- for fv in f.values -%}
+              {%- if fv.active -%}<a href="{{ fv.url_to_remove }}" class="cl-active-pill">{{ f.label }}: {{ fv.label }} &times;</a>{%- endif -%}
+            {%- endfor -%}
+          {%- endfor -%}
+          {%- if active_avail == '1' -%}<a href="javascript:void(0)" onclick="clSetAvailability('')" class="cl-active-pill">Availability: In Stock &times;</a>{%- endif -%}
+          {%- if active_avail == '0' -%}<a href="javascript:void(0)" onclick="clSetAvailability('')" class="cl-active-pill">Availability: Out of Stock &times;</a>{%- endif -%}
+          {%- if active_tag != blank -%}<a href="javascript:void(0)" onclick="clSetTag('')" class="cl-active-pill">Material: {{ active_tag }} &times;</a>{%- endif -%}
+          <a href="{{ collection.url }}" class="cl-clear-all-link">Clear all</a>
+        </div>
+      {%- endif -%}
+
+      {%- comment -%} Price Range {%- endcomment -%}
+      <div class="cl-drawer-section">
+        <h4 class="cl-drawer-section-title">Price Range</h4>
+        <div class="cl-price-row">
+          <div class="cl-price-field">
+            <span class="cl-currency">$</span>
+            <input type="number" class="cl-price-input" id="priceMin" placeholder="Min" min="0" value="{{ active_price_min }}">
+          </div>
+          <span class="cl-price-sep">—</span>
+          <div class="cl-price-field">
+            <span class="cl-currency">$</span>
+            <input type="number" class="cl-price-input" id="priceMax" placeholder="Max" min="0" value="{{ active_price_max }}">
+          </div>
+        </div>
+      </div>
+
+      {%- comment -%} All dynamic Shopify filters {%- endcomment -%}
+      {%- for filter in collection.filters -%}
+        {%- if filter.type == 'list' -%}
+          <div class="cl-drawer-section">
+            <h4 class="cl-drawer-section-title">{{ filter.label }}</h4>
+            <div class="cl-chips">
+              {%- for fv in filter.values -%}
+                <label class="cl-chip{% if fv.active %} cl-chip--active{% endif %}">
+                  <input type="checkbox" name="{{ fv.param_name }}" value="{{ fv.value }}" {% if fv.active %}checked{% endif %} form="clFilterForm" onchange="document.getElementById('clFilterForm').submit()">
+                  <span>{{ fv.label }} ({{ fv.count }})</span>
+                </label>
+              {%- endfor -%}
+            </div>
+          </div>
+        {%- endif -%}
+      {%- endfor -%}
+
+      <div class="cl-drawer-footer">
+        <button type="button" class="cl-apply-btn" onclick="clApplyPrice()">Apply Filters</button>
+        <a href="{{ collection.url }}" class="cl-clear-link">Clear All</a>
+      </div>
+    </div>
+  </div>
+  <div class="cl-overlay" id="clOverlay" onclick="clToggleDrawer()"></div>
+
+</div>
+
+{%- comment -%} Active filter tags strip {%- endcomment -%}
+{%- assign show_tags_strip = false -%}
+{%- if active_avail != blank or active_collection != blank or active_tag != blank or active_price_min != blank or active_price_max != blank -%}{%- assign show_tags_strip = true -%}{%- endif -%}
+{%- for f in collection.filters -%}{%- for fv in f.values -%}{%- if fv.active -%}{%- assign show_tags_strip = true -%}{%- endif -%}{%- endfor -%}{%- endfor -%}
+
+{%- if show_tags_strip -%}
+  <div class="cl-tags-strip">
+    {%- for f in collection.filters -%}
+      {%- for fv in f.values -%}
+        {%- if fv.active -%}<a href="{{ fv.url_to_remove }}" class="cl-tag-pill">{{ f.label }}: {{ fv.label }} &times;</a>{%- endif -%}
+      {%- endfor -%}
+    {%- endfor -%}
+    {%- if active_avail == '1' -%}<a href="javascript:void(0)" onclick="clSetAvailability('')" class="cl-tag-pill">Availability: In Stock &times;</a>{%- endif -%}
+    {%- if active_avail == '0' -%}<a href="javascript:void(0)" onclick="clSetAvailability('')" class="cl-tag-pill">Availability: Out of Stock &times;</a>{%- endif -%}
+    {%- if active_tag != blank -%}<a href="javascript:void(0)" onclick="clSetTag('')" class="cl-tag-pill">Material: {{ active_tag }} &times;</a>{%- endif -%}
+    {%- if active_price_min != blank or active_price_max != blank -%}<a href="{{ collection.url }}" class="cl-tag-pill">Price: ${{ active_price_min }}–${{ active_price_max }} &times;</a>{%- endif -%}
+    <a href="{{ collection.url }}" class="cl-tag-clear">Clear all</a>
+  </div>
+{%- endif -%}
+
+{%- comment -%} Results count {%- endcomment -%}
+<div class="cl-results-bar">
+  <p class="cl-results-count">{{ collection.products_count }} {{ collection.products_count | pluralize: 'product', 'products' }}</p>
+</div>
+
+{%- comment -%}═══════════════════════════════════════════ PRODUCT GRID ═══════════════════════════════════════════{%- endcomment -%}
+{%- paginate collection.products by section.settings.products_per_page -%}
+
+<div class="cl-grid-wrap">
+  <div class="cl-product-grid" id="clProductGrid">
+
+    {%- if collection.products.size == 0 -%}
+      <div class="cl-empty">
+        <p>No products match your filters.</p>
+        <a href="{{ collection.url }}" class="cl-empty-link">Clear all filters</a>
+      </div>
+    {%- else -%}
+      {%- for product in collection.products -%}
+
+        {%- comment -%} Find color option index {%- endcomment -%}
+        {%- assign color_idx = nil -%}
+        {%- for opt in product.options -%}
+          {%- assign opt_l = opt | downcase -%}
+          {%- if opt_l == 'color' or opt_l == 'colour' -%}
+            {%- assign color_idx = forloop.index0 -%}
+            {%- break -%}
+          {%- endif -%}
+        {%- endfor -%}
+
+        {%- comment -%} Build variant JSON for swatch JS {%- endcomment -%}
+        {%- assign vj = '[' -%}
+        {%- for v in product.variants -%}
+          {%- assign vc  = v.options[color_idx] | default: '' -%}
+          {%- assign vfi = v.featured_image | default: product.featured_image -%}
+          {%- assign vi  = vfi | img_url: '600x450', crop: 'center' -%}
+          {%- assign vu  = v.url | within: collection -%}
+          {%- assign vp  = v.price | money -%}
+          {%- assign vcp = v.compare_at_price | money -%}
+          {%- capture ve -%}{"id":{{ v.id }},"color":{{ vc | json }},"img":{{ vi | json }},"url":{{ vu | json }},"price":{{ vp | json }},"compare":{{ vcp | json }},"available":{{ v.available }}}{%- endcapture -%}
+          {%- unless forloop.last -%}{%- assign ve = ve | append: ',' -%}{%- endunless -%}
+          {%- assign vj = vj | append: ve -%}
+        {%- endfor -%}
+        {%- assign vj = vj | append: ']' -%}
+
+        {%- assign fv_    = product.variants.first -%}
+        {%- assign fvimg  = fv_.featured_image | default: product.featured_image -%}
+        {%- assign fvurl  = fv_.url | within: collection -%}
+
+        <div class="cl-product-card">
+
+          <a class="cl-card-img-link" href="{{ fvurl }}" data-card-link>
+            <div class="cl-card-img-wrap">
+              {%- if product.featured_image -%}
+                <img src="{{ fvimg | img_url: '600x450', crop: 'center' }}" alt="{{ product.title | escape }}" loading="lazy" width="600" height="450" class="cl-img cl-img--primary" data-card-main-img>
+                {%- if product.images[1] -%}
+                  <img src="{{ product.images[1] | img_url: '600x450', crop: 'center' }}" alt="{{ product.title | escape }}" loading="lazy" width="600" height="450" class="cl-img cl-img--hover">
+                {%- endif -%}
+              {%- else -%}
+                <div class="cl-no-img"><span>{{ product.title | truncate: 18 }}</span></div>
+              {%- endif -%}
+
+              {%- if product.available == false -%}
+                <span class="cl-badge cl-badge--sold">Sold Out</span>
+              {%- elsif product.compare_at_price > product.price -%}
+                <span class="cl-badge cl-badge--sale">Sale</span>
+              {%- endif -%}
+
+              <button type="button" class="cl-wish-btn" aria-label="Wishlist" onclick="event.preventDefault(); clToggleWish(this)">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" width="15" height="15">
+                  <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>
+                </svg>
+              </button>
+
+              {%- if product.available and section.settings.show_quick_add -%}
+                <div class="cl-quick-wrap">
+                  {%- if product.variants.size == 1 -%}
+                    <form method="post" action="/cart/add">
+                      <input type="hidden" name="id" value="{{ fv_.id }}" data-card-variant-id>
+                      <input type="hidden" name="quantity" value="1">
+                      <button type="submit" class="cl-quick-btn">Quick Add</button>
+                    </form>
+                  {%- else -%}
+                    <a href="{{ fvurl }}" class="cl-quick-btn" data-card-select-btn>Select Options</a>
+                  {%- endif -%}
+                </div>
+              {%- endif -%}
+            </div>
+          </a>
+
+          <div class="cl-card-info">
+            {%- if section.settings.show_vendor -%}
+              <p class="cl-vendor">{{ product.vendor }}</p>
+            {%- endif -%}
+            <div class="cl-name-price-row">
+              <a class="cl-card-name" href="{{ fvurl }}" data-card-name-link>{{ product.title }}</a>
+              <div class="cl-price-block">
+                {%- if product.compare_at_price > product.price -%}
+                  <span class="cl-price-was" data-card-compare>{{ product.compare_at_price | money }}</span>
+                {%- endif -%}
+                <span class="cl-price-now" data-card-price>{{ product.price | money }}</span>
+              </div>
+            </div>
+
+            {%- if color_idx != nil -%}
+              {%- assign color_opt = product.options_with_values[color_idx] -%}
+              {%- assign all_colors = color_opt.values -%}
+              {%- if all_colors.size > 0 -%}
+                <div class="cl-swatches" data-variants="{{ vj | escape }}" data-color-idx="{{ color_idx }}">
+                  {%- for c in all_colors limit: 6 -%}
+                    {%- assign sw_img = nil -%}
+                    {%- for v in product.variants -%}
+                      {%- if v.options[color_idx] == c -%}
+                        {%- assign sw_src = v.featured_image | default: product.featured_image -%}
+                        {%- assign sw_img = sw_src | img_url: '60x60', crop: 'center' -%}
+                        {%- break -%}
+                      {%- endif -%}
+                    {%- endfor -%}
+                    {%- assign c_css = c | downcase | replace: ' ', '' -%}
+                    <span class="cl-swatch{% if forloop.first %} cl-swatch--active{% endif %}" title="{{ c }}" data-color="{{ c }}" aria-label="{{ c }}" onclick="clSwatchClick(this)" style="background-color:{{ c_css }};{% if sw_img != nil %} background-image:url('{{ sw_img }}'); background-size:cover; background-position:center;{% endif %}"></span>
+                  {%- endfor -%}
+                  {%- if all_colors.size > 6 -%}
+                    <span class="cl-swatch-more">+{{ all_colors.size | minus: 6 }}</span>
+                  {%- endif -%}
+                </div>
+              {%- endif -%}
+            {%- endif -%}
+          </div>
+        </div>
+      {%- endfor -%}
+    {%- endif -%}
+
+  </div>
+
+  {%- if paginate.pages > 1 -%}
+    <div class="cl-pagination">
+      {%- if paginate.previous -%}
+        <a class="cl-page-arrow" href="{{ paginate.previous.url }}" aria-label="Previous"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16"><polyline points="15 18 9 12 15 6"/></svg></a>
+      {%- else -%}
+        <span class="cl-page-arrow cl-page-arrow--off"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16"><polyline points="15 18 9 12 15 6"/></svg></span>
+      {%- endif -%}
+
+      {%- for part in paginate.parts -%}
+        {%- if part.is_link -%}
+          <a class="cl-page-num" href="{{ part.url }}">{{ part.title }}</a>
+        {%- elsif part.title == paginate.current_page -%}
+          <span class="cl-page-num cl-page-num--active" aria-current="page">{{ part.title }}</span>
+        {%- else -%}
+          <span class="cl-page-ellipsis">{{ part.title }}</span>
+        {%- endif -%}
+      {%- endfor -%}
+
+      {%- if paginate.next -%}
+        <a class="cl-page-arrow" href="{{ paginate.next.url }}" aria-label="Next"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16"><polyline points="9 18 15 12 9 6"/></svg></a>
+      {%- else -%}
+        <span class="cl-page-arrow cl-page-arrow--off"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16"><polyline points="9 18 15 12 9 6"/></svg></span>
+      {%- endif -%}
+    </div>
+  {%- endif -%}
+
+</div>
+{%- endpaginate -%}
+
+</div>
+
+<script>
+/* ════════════════════════════════════════════════════════════
+   VIEW TOGGLE
+════════════════════════════════════════════════════════════ */
+function clSetView(v) {
+  var g = document.getElementById('clProductGrid');
+  var bg = document.getElementById('btnGrid');
+  var bl = document.getElementById('btnList');
+  if (v === 'list') {
+    g.classList.add('cl-list-view');
+    bl.classList.add('active'); bg.classList.remove('active');
+  } else {
+    g.classList.remove('cl-list-view');
+    bg.classList.add('active'); bl.classList.remove('active');
+  }
+  try { localStorage.setItem('cl_view', v); } catch(e) {}
+}
+(function () {
+  try { if (localStorage.getItem('cl_view') === 'list') clSetView('list'); } catch(e) {}
+}());
+
+/* ════════════════════════════════════════════════════════════
+   SORT — keep existing filter params when sorting
+════════════════════════════════════════════════════════════ */
+function clSubmitSort(sel) {
+  var url = new URL(window.location.href);
+  url.searchParams.set('sort_by', sel.value);
+  url.searchParams.delete('page');
+  window.location.href = url.toString();
+}
+
+/* ════════════════════════════════════════════════════════════
+   DROPDOWN TOGGLE
+════════════════════════════════════════════════════════════ */
+function clToggleDrop(id) {
+  document.querySelectorAll('.cl-dropdown-group').forEach(function (d) {
+    if (d.id !== id) d.classList.remove('cl-open');
+  });
+  document.getElementById(id).classList.toggle('cl-open');
+}
+document.addEventListener('click', function (e) {
+  if (!e.target.closest('.cl-dropdown-group')) {
+    document.querySelectorAll('.cl-dropdown-group').forEach(function (d) {
+      d.classList.remove('cl-open');
+    });
+  }
+});
+
+/* ════════════════════════════════════════════════════════════
+   AVAILABILITY FILTER (FIXED)
+   Uses correct parameter: filter.v.availability
+   URL format: collections/outdoor-furniture?sort_by=most-relevant&filter.v.price.gte=&filter.v.price.lte=&filter.v.availability=1
+════════════════════════════════════════════════════════════ */
+function clSetAvailability(value, btn, dropId) {
+  if (dropId) {
+    var drop = document.getElementById(dropId);
+    if (drop) drop.classList.remove('cl-open');
+  }
+  
+  var url = new URL(window.location.href);
+  
+  if (value === '') {
+    url.searchParams.delete('filter.v.availability');
+  } else {
+    url.searchParams.set('filter.v.availability', value);
+  }
+  url.searchParams.delete('page');
+  
+  window.location.href = url.toString();
+}
+
+/* ════════════════════════════════════════════════════════════
+   MATERIAL TAG FILTER
+   Uses correct parameter: filter.p.tag
+════════════════════════════════════════════════════════════ */
+function clSetTag(value, btn, dropId) {
+  if (dropId) {
+    var drop = document.getElementById(dropId);
+    if (drop) drop.classList.remove('cl-open');
+  }
+  
+  var url = new URL(window.location.href);
+  
+  if (value === '') {
+    url.searchParams.delete('filter.p.tag');
+  } else {
+    url.searchParams.set('filter.p.tag', value);
+  }
+  url.searchParams.delete('page');
+  
+  window.location.href = url.toString();
+}
+
+/* ════════════════════════════════════════════════════════════
+   DRAWER════════════════════════════════════════════════════════════ */
+function clToggleDrawer() {
+  var d = document.getElementById('clDrawer');
+  var o = document.getElementById('clOverlay');
+  var open = d.classList.toggle('cl-drawer-open');
+  d.setAttribute('aria-hidden', String(!open));
+  o.classList.toggle('cl-overlay-open', open);
+  document.body.style.overflow = open ? 'hidden' : '';
+}
+
+/* ════════════════════════════════════════════════════════════
+   PRICE FILTER
+════════════════════════════════════════════════════════════ */
+function clApplyPrice() {
+  var min = document.getElementById('priceMin').value.trim();
+  var max = document.getElementById('priceMax').value.trim();
+  var url = new URL(window.location.href);
+  if (min) { url.searchParams.set('filter.v.price.gte', min); }
+  else { url.searchParams.delete('filter.v.price.gte'); }
+  if (max) { url.searchParams.set('filter.v.price.lte', max); }
+  else { url.searchParams.delete('filter.v.price.lte'); }
+  url.searchParams.delete('page');
+  clToggleDrawer();
+  window.location.href = url.toString();
+}
+
+/* ════════════════════════════════════════════════════════════
+   WISHLIST
+════════════════════════════════════════════════════════════ */
+function clToggleWish(btn) {
+  btn.classList.toggle('cl-wish-active');
+  var svg = btn.querySelector('svg');
+  if (btn.classList.contains('cl-wish-active')) {
+    svg.style.fill = '#c0392b'; svg.style.stroke = '#c0392b';
+  } else {
+    svg.style.fill = 'none'; svg.style.stroke = 'currentColor';
+  }
+}
+
+/* ════════════════════════════════════════════════════════════
+   SWATCH CLICK
+════════════════════════════════════════════════════════════ */
+function clSwatchClick(swatchEl) {
+  var card = swatchEl.closest('.cl-product-card');
+  if (!card) return;
+  var swEl = swatchEl.closest('.cl-swatches');
+  if (!swEl) return;
+
+  var variants;
+  try {
+    variants = JSON.parse(swEl.getAttribute('data-variants').replace(/&quot;/g, '"'));
+  } catch(e) { console.warn('Swatch JSON error', e); return; }
+
+  var clickColor = swatchEl.getAttribute('data-color');
+  var matched = null;
+  for (var i = 0; i < variants.length; i++) {
+    if (variants[i].color === clickColor) { matched = variants[i]; break; }
+  }
+  if (!matched) return;
+
+  swEl.querySelectorAll('.cl-swatch').forEach(function(s) { s.classList.remove('cl-swatch--active'); });
+  swatchEl.classList.add('cl-swatch--active');
+
+  var mainImg = card.querySelector('[data-card-main-img]');
+  if (mainImg && matched.img) {
+    mainImg.style.opacity = '0';
+    mainImg.src = matched.img;
+    mainImg.onload = function () {
+      mainImg.style.transition = 'opacity .28s ease';
+      mainImg.style.opacity = '1';
+    };
+  }
+
+  var vu = matched.url;
+  [card.querySelector('[data-card-link]'),
+   card.querySelector('[data-card-name-link]'),
+   card.querySelector('[data-card-select-btn]')
+  ].forEach(function(el) { if (el) el.href = vu; });
+
+  var vid = card.querySelector('[data-card-variant-id]');
+  if (vid) vid.value = matched.id;
+
+  var priceEl = card.querySelector('[data-card-price]');
+  var compareEl = card.querySelector('[data-card-compare]');
+  if (priceEl) priceEl.textContent = matched.price;
+  if (compareEl) {
+    if (matched.compare && matched.compare !== matched.price) {
+      compareEl.textContent = matched.compare;
+      compareEl.style.display = '';
+    } else {
+      compareEl.style.display = 'none';
+    }
+  }
+}
+</script>
+
+{% schema %}
+{
+  "name": "Lanai Collection",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Grid Columns"
+    },
+    {
+      "type": "select",
+      "id": "columns_desktop",
+      "label": "Desktop columns (1280px+)",
+      "options": [
+        { "value": "2", "label": "2 columns" },
+        { "value": "3", "label": "3 columns" },
+        { "value": "4", "label": "4 columns" }
+      ],
+      "default": "3"
+    },
+    {
+      "type": "select",
+      "id": "columns_tablet",
+      "label": "Tablet columns (768–1279px)",
+      "options": [
+        { "value": "1", "label": "1 column" },
+        { "value": "2", "label": "2 columns" },
+        { "value": "3", "label": "3 columns" }
+      ],
+      "default": "2"
+    },
+    {
+      "type": "select",
+      "id": "columns_mobile",
+      "label": "Mobile columns (up to 767px)",
+      "options": [
+        { "value": "1", "label": "1 column" },
+        { "value": "2", "label": "2 columns" }
+      ],
+      "default": "1"
+    },
+    {
+      "type": "range",
+      "id": "products_per_page",
+      "label": "Products per page",
+      "min": 3,
+      "max": 24,
+      "step": 3,
+      "default": 9
+    },
+    {
+      "type": "header",
+      "content": "Collection Filter (Direct Redirect)"
+    },
+    {
+      "type": "text",
+      "id": "all_collection_handle",
+      "label": "\"All\" collection handle",
+      "default": "outdoor-furniture",
+      "info": "Jis collection ko \"All\" samjha jaaye uska handle likhein (e.g. outdoor-furniture)"
+    },
+    {
+      "type": "textarea",
+      "id": "collection_options",
+      "label": "Collection options — \"Display Name|handle\" format",
+      "default": "Outdoor Furniture|outdoor-furniture, In-Pool Loungers|in-pool-loungers, Fire Table|fire-table, Decor & Accessories|decor-accessories, Lighting|lighting, Entertaining|entertaining",
+      "info": "Format: Display Name|collection-handle"
+    },
+    {
+      "type": "header",
+      "content": "Material Filter (Tag-based)"
+    },
+    {
+      "type": "textarea",
+      "id": "material_tag_options",
+      "label": "Material tag names (comma separated)",
+      "default": "Teak Wood, Acacia Wood, Aluminum, Stainless Steel, Rattan / Wicker, Plastic / Resin, Textilene (outdoor fabric), Polypropylene (Plastic), Resin, Fiberglass, Marine-Grade Polymer, UV-Resistant Plastic",
+      "info": "Exact tag names jo products mein lagaye hain"
+    },
+    {
+      "type": "header",
+      "content": "Product Card"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_quick_add",
+      "label": "Quick Add button dikhao",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_vendor",
+      "label": "Vendor/Brand naam dikhao",
+      "default": false
+    }
+  ]
+}
+{% endschema %}

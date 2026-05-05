@@ -1,0 +1,121 @@
+<header class="site-header" data-lanai-header>
+  <div class="container-shell">
+    <div class="bar">
+      <button type="button" class="nav-toggle" aria-label="Open menu" aria-expanded="false" aria-controls="mobile-menu-{{ section.id }}">
+        <i class="bi bi-list"></i>
+      </button>
+
+      <nav class="main-nav" aria-label="Primary">
+        {%- if section.settings.menu != blank and section.settings.menu.links.size > 0 -%}
+          {%- for link in section.settings.menu.links -%}
+            <a href="{{ link.url }}">{{ link.title }}</a>
+          {%- endfor -%}
+        {%- else -%}
+          <a href="{{ routes.root_url }}">Home</a>
+          <a href="{{ routes.all_products_collection_url }}">Shop</a>
+          <a href="{{ routes.all_products_collection_url }}">Furniture</a>
+          <a href="{{ routes.all_products_collection_url }}">Fire Pits</a>
+          <a href="{{ routes.all_products_collection_url }}">Decor</a>
+        {%- endif -%}
+      </nav>
+
+      <a class="brand" href="{{ section.settings.brand_link | default: routes.root_url }}" aria-label="{{ section.settings.brand_primary | escape }} {{ section.settings.brand_secondary | escape }}">
+        {%- if section.settings.logo != blank -%}
+          {{ section.settings.logo | image_url: width: 340 | image_tag: class: 'brand-logo', loading: 'lazy', alt: section.settings.brand_primary }}
+        {%- else -%}
+          <span>{{ section.settings.brand_primary }}</span>
+          <small>{{ section.settings.brand_secondary }}</small>
+        {%- endif -%}
+      </a>
+
+      <div class="header-icons" aria-label="Utility links">
+        {%- if section.settings.show_search -%}
+          <a href="{{ section.settings.search_link | default: routes.search_url }}" aria-label="Search"><i class="bi bi-search"></i></a>
+        {%- endif -%}
+        {%- if section.settings.show_account and shop.customer_accounts_enabled -%}
+          <a href="{% if customer %}{{ routes.account_url }}{% else %}{{ routes.account_login_url }}{% endif %}" aria-label="Account"><i class="bi bi-person"></i></a>
+        {%- endif -%}
+        {%- if section.settings.show_cart -%}
+          <a href="{{ routes.cart_url }}" aria-label="Cart"><i class="bi bi-bag"></i></a>
+        {%- endif -%}
+      </div>
+    </div>
+
+    <nav id="mobile-menu-{{ section.id }}" class="mobile-menu" aria-label="Mobile Primary">
+      {%- if section.settings.menu != blank and section.settings.menu.links.size > 0 -%}
+        {%- for link in section.settings.menu.links -%}
+          <a href="{{ link.url }}">{{ link.title }}</a>
+        {%- endfor -%}
+      {%- else -%}
+        <a href="{{ routes.root_url }}">Home</a>
+        <a href="{{ routes.all_products_collection_url }}">Shop</a>
+        <a href="{{ routes.all_products_collection_url }}">Furniture</a>
+        <a href="{{ routes.all_products_collection_url }}">Fire Pits</a>
+        <a href="{{ routes.all_products_collection_url }}">Decor</a>
+      {%- endif -%}
+    </nav>
+  </div>
+</header>
+
+{% schema %}
+{
+  "name": "Lanai Header",
+  "settings": [
+    {
+      "type": "link_list",
+      "id": "menu",
+      "label": "Primary menu"
+    },
+    {
+      "type": "image_picker",
+      "id": "logo",
+      "label": "Brand logo"
+    },
+    {
+      "type": "url",
+      "id": "brand_link",
+      "label": "Brand link"
+    },
+    {
+      "type": "text",
+      "id": "brand_primary",
+      "label": "Brand title",
+      "default": "Lanai"
+    },
+    {
+      "type": "text",
+      "id": "brand_secondary",
+      "label": "Brand subtitle",
+      "default": "Lifestyle"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_search",
+      "label": "Show search icon",
+      "default": true
+    },
+    {
+      "type": "url",
+      "id": "search_link",
+      "label": "Search link override"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_account",
+      "label": "Show account icon",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_cart",
+      "label": "Show cart icon",
+      "default": true
+    }
+  ],
+  "presets": [
+    {
+      "name": "Lanai Header"
+    }
+  ]
+}
+{% endschema %}

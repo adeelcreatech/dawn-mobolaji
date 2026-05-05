@@ -1,0 +1,144 @@
+<style>
+    .brand-promise {
+        background-color: {{ section.settings.bg_color }};
+    }
+    .brand-promise .brand-promise-cards .brand-promise-box {
+        background-color: {{ section.settings.card_bg_color }};
+    }
+    .brand-promise .brand-promise-cards .brand-promise-box .brand-promise-icon-box {
+        background-color: {{ section.settings.icon_bg_color }};
+    }
+    .brand-promise .brand-promise-cards .brand-promise-box .brand-promise-icon-box svg {
+        stroke: {{ section.settings.icon_stroke_color }};
+    }
+</style>
+
+<section class="brand-promise" id="brand-promise-{{ section.id }}">
+  <div class="brand-promise-cards container-shell">
+
+    {% for block in section.blocks %}
+      {% if block.type == 'promise_card' %}
+        <div class="brand-promise-box" {{ block.shopify_attributes }}>
+          <div class="brand-promise-icon-box">
+            {{ block.settings.icon_svg }}
+          </div>
+          <h3>{{ block.settings.heading }}</h3>
+        </div>
+      {% endif %}
+    {% endfor %}
+
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Brand Promise",
+  "tag": "section",
+  "class": "brand-promise-section",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Section Colors"
+    },
+    {
+      "type": "color",
+      "id": "bg_color",
+      "label": "Section Background Color",
+      "default": "#F6F1E8"
+    },
+    {
+      "type": "color",
+      "id": "card_bg_color",
+      "label": "Card Background Color",
+      "default": "#FBF8F3"
+    },
+    {
+      "type": "color",
+      "id": "icon_bg_color",
+      "label": "Icon Box Background Color",
+      "default": "#E7D8C7"
+    },
+    {
+      "type": "color",
+      "id": "icon_stroke_color",
+      "label": "Icon Stroke Color",
+      "default": "#3F3A36"
+    },
+    {
+      "type": "header",
+      "content": "Typography"
+    },
+    {
+      "type": "color",
+      "id": "heading_color",
+      "label": "Heading Color",
+      "default": "#3F3A36"
+    },
+    {
+      "type": "range",
+      "id": "heading_size",
+      "label": "Heading Font Size (px)",
+      "min": 12,
+      "max": 28,
+      "step": 1,
+      "default": 16
+    }
+  ],
+  "blocks": [
+    {
+      "type": "promise_card",
+      "name": "Promise Card",
+      "settings": [
+        {
+          "type": "text",
+          "id": "heading",
+          "label": "Card Heading",
+          "default": "Curated Premium Assortment"
+        },
+        {
+          "type": "html",
+          "id": "icon_svg",
+          "label": "Icon SVG Code",
+          "info": "Paste your full <svg>...</svg> code here."
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Brand Promise",
+      "blocks": [
+        {
+          "type": "promise_card",
+          "settings": {
+            "heading": "Curated Premium Assortment",
+            "icon_svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" fill=\"none\" viewBox=\"0 0 30 30\" height=\"30\" width=\"30\"><path stroke-linejoin=\"round\" stroke-linecap=\"round\" stroke-width=\"2\" stroke=\"#3F3A36\" d=\"M14.568 14.75V10.625C14.568 10.2603 14.3893 9.91059 14.0713 9.65273C13.7532 9.39487 13.3218 9.25 12.872 9.25H9.48C9.03019 9.25 8.59881 9.39487 8.28075 9.65273C7.96269 9.91059 7.784 10.2603 7.784 10.625V14.75M21.352 25.75V21.625C21.352 21.2603 21.1733 20.9106 20.8553 20.6527C20.5372 20.3949 20.1058 20.25 19.656 20.25H16.264C15.8142 20.25 15.3828 20.3949 15.0647 20.6527C14.7467 20.9106 14.568 21.2603 14.568 21.625V25.75M28.136 28.5V1M1 14.75H28.136M1 25.75H28.136M1 1V28.5M1 3.75H28.136\"/></svg>"
+          }
+        },
+        {
+          "type": "promise_card",
+          "settings": {
+            "heading": "Elevated Outdoor Style",
+            "icon_svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" fill=\"none\" viewBox=\"0 0 30 30\" height=\"30\" width=\"30\"><path stroke-linejoin=\"round\" stroke-linecap=\"round\" stroke-width=\"2\" stroke=\"#3F3A36\" d=\"M14.568 14.75V10.625C14.568 10.2603 14.3893 9.91059 14.0713 9.65273C13.7532 9.39487 13.3218 9.25 12.872 9.25H9.48C9.03019 9.25 8.59881 9.39487 8.28075 9.65273C7.96269 9.91059 7.784 10.2603 7.784 10.625V14.75M21.352 25.75V21.625C21.352 21.2603 21.1733 20.9106 20.8553 20.6527C20.5372 20.3949 20.1058 20.25 19.656 20.25H16.264C15.8142 20.25 15.3828 20.3949 15.0647 20.6527C14.7467 20.9106 14.568 21.2603 14.568 21.625V25.75M28.136 28.5V1M1 14.75H28.136M1 25.75H28.136M1 1V28.5M1 3.75H28.136\"/></svg>"
+          }
+        },
+        {
+          "type": "promise_card",
+          "settings": {
+            "heading": "Designed for Poolside Living",
+            "icon_svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" fill=\"none\" viewBox=\"0 0 30 30\" height=\"30\" width=\"30\"><path stroke-linejoin=\"round\" stroke-linecap=\"round\" stroke-width=\"2\" stroke=\"#3F3A36\" d=\"M14.568 14.75V10.625C14.568 10.2603 14.3893 9.91059 14.0713 9.65273C13.7532 9.39487 13.3218 9.25 12.872 9.25H9.48C9.03019 9.25 8.59881 9.39487 8.28075 9.65273C7.96269 9.91059 7.784 10.2603 7.784 10.625V14.75M21.352 25.75V21.625C21.352 21.2603 21.1733 20.9106 20.8553 20.6527C20.5372 20.3949 20.1058 20.25 19.656 20.25H16.264C15.8142 20.25 15.3828 20.3949 15.0647 20.6527C14.7467 20.9106 14.568 21.2603 14.568 21.625V25.75M28.136 28.5V1M1 14.75H28.136M1 25.75H28.136M1 1V28.5M1 3.75H28.136\"/></svg>"
+          }
+        },
+        {
+          "type": "promise_card",
+          "settings": {
+            "heading": "Quality That Lasts",
+            "icon_svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" fill=\"none\" viewBox=\"0 0 30 30\" height=\"30\" width=\"30\"><path stroke-linejoin=\"round\" stroke-linecap=\"round\" stroke-width=\"2\" stroke=\"#3F3A36\" d=\"M14.568 14.75V10.625C14.568 10.2603 14.3893 9.91059 14.0713 9.65273C13.7532 9.39487 13.3218 9.25 12.872 9.25H9.48C9.03019 9.25 8.59881 9.39487 8.28075 9.65273C7.96269 9.91059 7.784 10.2603 7.784 10.625V14.75M21.352 25.75V21.625C21.352 21.2603 21.1733 20.9106 20.8553 20.6527C20.5372 20.3949 20.1058 20.25 19.656 20.25H16.264C15.8142 20.25 15.3828 20.3949 15.0647 20.6527C14.7467 20.9106 14.568 21.2603 14.568 21.625V25.75M28.136 28.5V1M1 14.75H28.136M1 25.75H28.136M1 1V28.5M1 3.75H28.136\"/></svg>"
+          }
+        }
+      ]
+    }
+  ],
+  "max_blocks": 8
+}
+{% endschema %}

@@ -1,0 +1,118 @@
+<section class="featured-collection-section">
+
+    <h2>{{ section.settings.heading }}</h2>
+
+    <div class="grid container-shell">
+        {% assign collection = collections[section.settings.collection] %}
+        {% assign product_limit = section.settings.products_to_show %}
+
+        {% for product in collection.products limit: product_limit %}
+
+            <div class="card">
+                <div class="card-media">
+                    {%- assign featured_img = product.featured_image -%}
+                    {% if featured_img %}
+                        <img src="{{ featured_img | image_url: width: 600 }}" alt="{{ featured_img.alt | escape }}" loading="lazy" width="600" height="450" />
+                    {% endif %}
+
+                    {%- assign product_video = product.metafields.custom.product_video -%}
+                    {% if product_video %}
+                        <video class="card-video" src="{{ product.metafields.custom.product_video }}" muted loop playsinline preload="metadata"></video>
+                    {% endif %}                        
+                </div>
+
+                <div class="card-info">
+                    <span class="card-title">{{ product.title }}</span>
+                    <span class="price">{{ product.price | money }}</span>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+
+    {% if section.settings.show_cta %}
+        <div class="cta-wrap">
+            {%- if section.settings.secondary_button_label != blank -%}
+                <a class="btn-clean soft" href="{{ section.settings.secondary_button_link | default: routes.root_url }}">{{ section.settings.secondary_button_label }}</a>
+            {%- endif -%}
+        </div>
+    {% endif %}
+
+</section>
+
+<script>
+    document.querySelectorAll('.featured-collection-section .card').forEach(card => {
+        const video = card.querySelector('video');
+        if (!video) return;
+
+        // Preload video as soon as page loads
+        video.load();
+
+        card.addEventListener('mouseenter', () => {
+            video.currentTime = 0;
+            const playPromise = video.play();
+            if (playPromise !== undefined) {
+                playPromise.catch(err => {
+                    console.warn('Video play failed:', err);
+                });
+            }
+        });
+
+        card.addEventListener('mouseleave', () => {
+            video.pause();
+            video.currentTime = 0;
+        });
+    });
+</script>
+
+{% schema %}
+{
+  "name": "Featured Collection",
+  "tag": "section",
+  "class": "featured-collection-wrapper",
+  "settings": [
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Section Heading",
+      "default": "Featured Collection"
+    },
+    {
+      "type": "collection",
+      "id": "collection",
+      "label": "Select Collection"
+    },
+    {
+      "type": "range",
+      "id": "products_to_show",
+      "label": "Number of Products",
+      "min": 2,
+      "max": 12,
+      "step": 1,
+      "default": 8
+    },
+    {
+      "type": "checkbox",
+      "id": "show_cta",
+      "label": "Show 'Shop All' Button",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "secondary_button_label",
+      "label": "Secondary button label",
+      "default": "Shop All Collections"
+    },
+    {
+      "type": "url",
+      "id": "secondary_button_link",
+      "label": "Secondary button link"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Featured Collection",
+      "category": "Collection"
+    }
+  ]
+}
+{% endschema %}

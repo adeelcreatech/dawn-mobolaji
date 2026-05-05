@@ -1,0 +1,735 @@
+{% comment %}
+  Section: Luxury Category Slider
+  Description: A responsive slider for collection cards with video on hover,
+               featuring custom navigation and edge gap detection.
+  Version: 1.0.0
+  Author: Shopify Section
+{% endcomment %}
+
+{{ 'https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.css' | stylesheet_tag }}
+{{ 'https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick-theme.css' | stylesheet_tag }}
+
+<style>
+  .slider-wrap-{{ section.id }} {
+    width: 100%;
+    background: {{ section.settings.background_color}};
+    padding-left: 0;
+    padding-right: 0;
+    overflow: hidden;
+    transition: padding-left 450ms ease, padding-right 450ms ease;
+    border-bottom: 1px solid #DDD2C6;
+    padding-bottom: 225px;
+    position: relative;
+  }
+  .slider-wrap-{{ section.id }}.is-start {
+    padding-left: clamp(18px, 4.5vw, 56px);
+  }
+  .slider-wrap-{{ section.id }}.is-end {
+    padding-right: clamp(18px, 4.5vw, 56px);
+  }
+  .luxury-slider-{{ section.id }} .slider-item {
+    padding-right: {{ section.settings.item_gap }}px;
+    position: relative;
+  }
+  .card-media {
+    position: relative;
+    height: {{ section.settings.card_height }}px;
+    overflow: hidden;
+  }
+  .card-image, .card-video {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+  .card-image {
+    transition: opacity 240ms ease;
+  }
+  .card-video {
+    position: absolute;
+    inset: 0;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 240ms ease;
+  }
+  .slider-item.is-hovered .card-video {
+    opacity: 1;
+  }
+  .slider-item.is-hovered .card-image {
+    opacity: 0;
+  }
+  .card-title {
+    margin: {{ section.settings.title_margin_top }}px 0 0;
+    color: #3F3A36;
+    text-align: {{ section.settings.title_alignment }};
+  }
+  .collection-link {
+    text-decoration: none;
+    display: block;
+    color: inherit;
+  }
+  .slider-nav-{{ section.id }} {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin: {{ section.settings.nav_margin_top }}px 0 {{ section.settings.nav_margin_bottom }}px;
+    position: absolute;
+    top: 82%;
+    left: 50%;
+    transform: translate(-50%, -82%);
+  }
+  .slider-nav-{{ section.id }} .nav-btn {
+    width: {{ section.settings.nav_button_size }}px;
+    height: {{ section.settings.nav_button_size }}px;
+    border: none;
+    background: {{ section.settings.arrow_background_color}};
+    color: {{ section.settings.nav_icon_color }};
+    font-size: {{ section.settings.nav_icon_size }}px;
+    line-height: 1;
+    cursor: pointer;
+    border-radius: {{ section.settings.nav_button_radius }}px;
+    transition: all 0.2s ease;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .slider-nav-{{ section.id }} .nav-btn:hover { 
+    background: {{ section.settings.nav_hover_bg }};
+    color: {{ section.settings.nav_hover_icon }};
+    transform: scale(1.05);
+  }
+  .slider-nav-{{ section.id }} .nav-btn.slick-disabled { 
+    opacity: 0.45; 
+    cursor: not-allowed; 
+    transform: none;
+  }
+  .slider-nav-{{ section.id }} .nav-btn svg {
+    width: min({{ section.settings.nav_icon_size }}px, 13px);
+    height: min({{ section.settings.nav_icon_size }}px, 13px);
+    fill: currentColor;
+  }
+
+  /* Responsive Styles */
+  @media (max-width: 1440px) {
+    .card-media {
+      height: {{ section.settings.card_height_laptop }}px;
+    }
+    /* Remove padding-right from last slide */
+    .luxury-slider-{{ section.id }} .slider-item:last-child {
+      padding-right: 0px !important;
+      width: 16.66% !important;
+    }
+  }
+
+  @media (max-width: 1199px) {
+    .slider-wrap-{{ section.id }} {
+      padding-left: 0;
+      padding-right: 0;
+    }
+    .slider-wrap-{{ section.id }}.is-start {
+      padding-left: 14px;
+    }
+    .slider-wrap-{{ section.id }}.is-end {
+      padding-right: 14px;
+    }
+  }
+
+  @media (max-width: 767px) {
+    .luxury-slider-{{ section.id }} .slider-item { 
+      padding-right: {{ section.settings.item_gap_mobile }}px; 
+    }
+    /* Mobile par bhi last slide se gap remove */
+    .luxury-slider-{{ section.id }} .slider-item:last-child {
+      padding-right: 0px !important;
+    }
+    .card-media { 
+      height: {{ section.settings.card_height_mobile }}px; 
+    }
+  }
+</style>
+
+<section class="slider-wrap-{{ section.id }}{% if section.blocks.size > 0 %} is-start{% endif %}">
+  <div style="margin: {{ section.settings.slider_margin_top }}px 0 0;" class="">
+    <div class="luxury-slider-{{ section.id }}">
+      {% for block in section.blocks %}
+        <div class="slider-item" {{ block.shopify_attributes }}>
+          {% assign collection = block.settings.collection %}
+          {% assign custom_url = block.settings.custom_link %}
+          {% assign link_url = custom_url %}
+
+          {% if collection != blank and custom_url == blank %}
+            {% assign link_url = collection.url %}
+          {% endif %}
+
+          {% if link_url != blank %}
+            <a href="{{ link_url }}" class="collection-link">
+          {% endif %}
+
+          <div class="card-media">
+            {% assign featured_image = block.settings.featured_image %}
+            {% if collection != blank and featured_image == blank %}
+              {% assign featured_image = collection.featured_image | default: collection.products.first.featured_image %}
+            {% endif %}
+
+            <img class="card-image" src="{{ featured_image | image_url: width: auto, height: auto, crop: 'center' }}" alt="{{ block.settings.title | escape }}" loading="lazy" width="800" height="600">
+
+            {% assign video_url = block.settings.video_url %}
+            {% if video_url != blank %}
+              <video class="card-video" muted loop playsinline preload="none">
+                <source src="{{ video_url }}" type="video/mp4" />
+              </video>
+            {% endif %}
+          </div>
+
+          <h3 class="card-title">{{ block.settings.title | default: block.settings.collection.title | default: 'Category Name' }}</h3>
+
+          {% if link_url != blank %}
+            </a>
+          {% endif %}
+        </div>
+      {% endfor %}
+    </div>
+
+    <div class="slider-nav-{{ section.id }}"></div>
+
+  </div>
+</section>
+
+<!-- jQuery + Slick JS -->
+<!--<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.min.js"></script>-->
+
+<script>
+  (function() {
+    const sectionId = {{ section.id | json }};
+    const $slider = $(`.luxury-slider-${sectionId}`);
+    const $sliderWrap = $(`.slider-wrap-${sectionId}`);
+
+    // Get custom SVG arrows from the new settings
+    const customPrevSvg = {{ section.settings.custom_prev_arrow_svg | json }};
+    const customNextSvg = {{ section.settings.custom_next_arrow_svg | json }};
+    
+    // Use custom SVGs if provided, otherwise fallback to defaults
+    let prevArrowHtml = '←';
+    let nextArrowHtml = '→';
+    
+    if (customPrevSvg && customPrevSvg.trim() !== '') {
+      prevArrowHtml = customPrevSvg;
+    }
+    
+    if (customNextSvg && customNextSvg.trim() !== '') {
+      nextArrowHtml = customNextSvg;
+    }
+    
+    // Create arrow button HTML with the SVG content
+    const prevButtonHtml = `<button type="button" class="nav-btn" aria-label="Previous">${prevArrowHtml}</button>`;
+    const nextButtonHtml = `<button type="button" class="nav-btn" aria-label="Next">${nextArrowHtml}</button>`;
+
+    function resetHoverVideos() {
+      $slider.find('.slider-item.is-hovered').removeClass('is-hovered');
+      $slider.find('.card-video').each(function () {
+        this.pause();
+        this.currentTime = 0;
+      });
+    }
+
+    function syncEdgeGap(slick, activeSlide) {
+      const currentIndex = typeof activeSlide === 'number' ? activeSlide : (slick.currentSlide || 0);
+      const visibleSlides = Number(slick.options.slidesToShow) || 1;
+      const lastStartIndex = slick.slideCount - visibleSlides;
+      const atStart = currentIndex <= 0;
+      const atEnd = currentIndex >= (lastStartIndex - 0.01);
+      $sliderWrap.toggleClass('is-start', atStart);
+      $sliderWrap.toggleClass('is-end', atEnd);
+      
+      // Ensure last slide has no padding-right
+      $slider.find('.slider-item').each(function(index) {
+        if (index === slick.slideCount - 1) {
+          $(this).css('padding-right', '0px');
+        }
+      });
+    }
+
+    $slider.on('init reInit afterChange breakpoint', function (event, slick) {
+      if (!slick) return;
+      syncEdgeGap(slick, slick.currentSlide);
+    });
+
+    $slider.on('beforeChange', function (event, slick, currentSlide, nextSlide) {
+      if (!slick) return;
+      resetHoverVideos();
+      syncEdgeGap(slick, nextSlide);
+    });
+
+    $slider.on('mouseenter', '.slider-item', function () {
+      const $item = $(this);
+      const video = $item.find('.card-video').get(0);
+      if (!video) return;
+
+      const playPromise = video.play();
+      if (playPromise && typeof playPromise.catch === 'function') {
+        playPromise.catch(() => {});
+      }
+      $item.addClass('is-hovered');
+    });
+
+    $slider.on('mouseleave', '.slider-item', function () {
+      const $item = $(this);
+      const video = $item.find('.card-video').get(0);
+      if (!video) return;
+
+      video.pause();
+      video.currentTime = 0;
+      $item.removeClass('is-hovered');
+    });
+
+    $slider.slick({
+      infinite: false,
+      speed: {{ section.settings.slider_speed }},
+      cssEase: 'ease-in-out',
+      slidesToShow: 3.2,
+      slidesToScroll: {{ section.settings.slides_to_scroll_desktop }},
+      variableWidth: false,
+      arrows: true,
+      dots: false,
+      appendArrows: `.slider-nav-${sectionId}`,
+      prevArrow: prevButtonHtml,
+      nextArrow: nextButtonHtml,
+      responsive: [
+        {
+          breakpoint: 1200,
+          settings: {
+            slidesToShow: 2.2,
+            slidesToScroll: {{ section.settings.slides_to_scroll_tablet }}
+          }
+        },
+        {
+          breakpoint: 767,
+          settings: {
+            slidesToShow: 1.15,
+            slidesToScroll: {{ section.settings.slides_to_scroll_mobile }}
+          }
+        }
+      ]
+    });
+  })();
+</script>
+
+{% schema %}
+{
+  "name": "Luxury Category Slider",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Section Header"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_section_header",
+      "label": "Show Section Header",
+      "default": true
+    },
+    {
+      "type": "header",
+      "content": "Colors"
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Background Color",
+      "default": "#E7D8C7"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text Color",
+      "default": "#3c3632"
+    },
+    {
+      "type": "color",
+      "id": "arrow_background_color",
+      "label": "Arrow Background Color",
+      "default": "#e2d7c8"
+    },
+    {
+      "type": "color",
+      "id": "nav_icon_color",
+      "label": "Arrow Icon Color",
+      "default": "#2f2a26"
+    },
+    {
+      "type": "color",
+      "id": "nav_hover_bg",
+      "label": "Arrow Hover Background Color",
+      "default": "#d4c9b8"
+    },
+    {
+      "type": "color",
+      "id": "nav_hover_icon",
+      "label": "Arrow Hover Icon Color",
+      "default": "#1a1614"
+    },
+    {
+      "type": "header",
+      "content": "Custom Navigation Arrows"
+    },
+    {
+      "type": "html",
+      "id": "custom_prev_arrow_svg",
+      "label": "Custom Previous Arrow SVG",
+      "default": "←",
+      "info": "Paste your custom SVG code here. Example: <svg width='24' height='24' viewBox='0 0 24 24' fill='none' xmlns='http://www.w3.org/2000/svg'><path d='M15 18L9 12L15 6' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/></svg>"
+    },
+    {
+      "type": "html",
+      "id": "custom_next_arrow_svg",
+      "label": "Custom Next Arrow SVG",
+      "default": "→",
+      "info": "Paste your custom SVG code here. Example: <svg width='24' height='24' viewBox='0 0 24 24' fill='none' xmlns='http://www.w3.org/2000/svg'><path d='M9 18L15 12L9 6' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/></svg>"
+    },
+    {
+      "type": "header",
+      "content": "Sizing & Layout"
+    },
+    {
+      "type": "range",
+      "id": "card_height",
+      "label": "Card Height (Desktop)",
+      "min": 300,
+      "max": 700,
+      "step": 10,
+      "default": 510,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "card_height_laptop",
+      "label": "Card Height (Laptop)",
+      "min": 300,
+      "max": 700,
+      "step": 10,
+      "default": 400,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "card_height_mobile",
+      "label": "Card Height (Mobile)",
+      "min": 200,
+      "max": 500,
+      "step": 10,
+      "default": 300,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "item_gap",
+      "label": "Gap Between Items (Desktop)",
+      "min": 0,
+      "max": 40,
+      "step": 2,
+      "default": 16,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "item_gap_mobile",
+      "label": "Gap Between Items (Mobile)",
+      "min": 0,
+      "max": 30,
+      "step": 2,
+      "default": 10,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "slider_margin_top",
+      "label": "Slider Margin Top",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "default": 0,
+      "unit": "px"
+    },
+    {
+      "type": "header",
+      "content": "Typography"
+    },
+    {
+      "type": "range",
+      "id": "title_font_size_desktop",
+      "label": "Title Font Size (Desktop)",
+      "min": 18,
+      "max": 60,
+      "step": 2,
+      "default": 42,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "title_font_size_tablet",
+      "label": "Title Font Size (Tablet)",
+      "min": 16,
+      "max": 50,
+      "step": 2,
+      "default": 30,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "title_font_size_mobile",
+      "label": "Title Font Size (Mobile)",
+      "min": 14,
+      "max": 40,
+      "step": 2,
+      "default": 24,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "title_margin_top",
+      "label": "Title Margin Top",
+      "min": 0,
+      "max": 50,
+      "step": 2,
+      "default": 14,
+      "unit": "px"
+    },
+    {
+      "type": "select",
+      "id": "title_alignment",
+      "label": "Title Alignment",
+      "options": [
+        { "value": "left", "label": "Left" },
+        { "value": "center", "label": "Center" },
+        { "value": "right", "label": "Right" }
+      ],
+      "default": "left"
+    },
+    {
+      "type": "header",
+      "content": "Navigation"
+    },
+    {
+      "type": "range",
+      "id": "nav_button_size",
+      "label": "Navigation Button Size",
+      "min": 36,
+      "max": 70,
+      "step": 2,
+      "default": 52,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "nav_icon_size",
+      "label": "Navigation Icon Size",
+      "min": 14,
+      "max": 40,
+      "step": 2,
+      "default": 28,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "nav_button_radius",
+      "label": "Navigation Button Border Radius",
+      "min": 0,
+      "max": 50,
+      "step": 2,
+      "default": 0,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "nav_margin_top",
+      "label": "Navigation Margin Top",
+      "min": 0,
+      "max": 80,
+      "step": 5,
+      "default": 80,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "nav_margin_bottom",
+      "label": "Navigation Margin Bottom",
+      "min": 0,
+      "max": 80,
+      "step": 5,
+      "default": 80,
+      "unit": "px"
+    },
+    {
+      "type": "header",
+      "content": "Slider Behavior"
+    },
+    {
+      "type": "range",
+      "id": "slider_speed",
+      "label": "Slider Speed (ms)",
+      "min": 200,
+      "max": 1000,
+      "step": 50,
+      "default": 450,
+      "unit": "ms"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_dots",
+      "label": "Show Dots",
+      "default": false
+    },
+    {
+      "type": "header",
+      "content": "Slides to Show - Desktop"
+    },
+    {
+      "type": "range",
+      "id": "slides_to_show_desktop",
+      "label": "Slides to Show (Desktop >1200px)",
+      "min": 1,
+      "max": 6,
+      "step": 1,
+      "default": 3
+    },
+    {
+      "type": "range",
+      "id": "slides_to_scroll_desktop",
+      "label": "Slides to Scroll (Desktop)",
+      "min": 1,
+      "max": 6,
+      "step": 1,
+      "default": 3
+    },
+    {
+      "type": "header",
+      "content": "Slides to Show - Tablet"
+    },
+    {
+      "type": "range",
+      "id": "slides_to_show_tablet",
+      "label": "Slides to Show (Tablet 768-1199px)",
+      "min": 1,
+      "max": 5,
+      "step": 1,
+      "default": 2
+    },
+    {
+      "type": "range",
+      "id": "slides_to_scroll_tablet",
+      "label": "Slides to Scroll (Tablet)",
+      "min": 1,
+      "max": 5,
+      "step": 1,
+      "default": 2
+    },
+    {
+      "type": "header",
+      "content": "Slides to Show - Mobile"
+    },
+    {
+      "type": "range",
+      "id": "slides_to_show_mobile",
+      "label": "Slides to Show (Mobile <768px)",
+      "min": 1,
+      "max": 3,
+      "step": 1,
+      "default": 1
+    },
+    {
+      "type": "range",
+      "id": "slides_to_scroll_mobile",
+      "label": "Slides to Scroll (Mobile)",
+      "min": 1,
+      "max": 3,
+      "step": 1,
+      "default": 1
+    }
+  ],
+  "blocks": [
+    {
+      "type": "category_card",
+      "name": "Category Card",
+      "settings": [
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Custom Title",
+          "default": "Category Name",
+          "info": "Leave empty to use collection title"
+        },
+        {
+          "type": "image_picker",
+          "id": "featured_image",
+          "label": "Featured Image",
+          "info": "Leave empty to use collection featured image"
+        },
+        {
+          "type": "url",
+          "id": "video_url",
+          "label": "Hover Video URL (MP4)",
+          "info": "Direct link to .mp4 file"
+        },
+        {
+          "type": "collection",
+          "id": "collection",
+          "label": "Collection"
+        },
+        {
+          "type": "url",
+          "id": "custom_link",
+          "label": "Custom Link",
+          "info": "Overrides collection link if provided"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Luxury Category Slider",
+      "blocks": [
+        {
+          "type": "category_card",
+          "settings": {
+            "title": "Outdoor Furniture"
+          }
+        },
+        {
+          "type": "category_card",
+          "settings": {
+            "title": "In-Pool Loungers"
+          }
+        },
+        {
+          "type": "category_card",
+          "settings": {
+            "title": "Fire Tables"
+          }
+        },
+        {
+          "type": "category_card",
+          "settings": {
+            "title": "Decor"
+          }
+        },
+        {
+          "type": "category_card",
+          "settings": {
+            "title": "Daybeds"
+          }
+        },
+        {
+          "type": "category_card",
+          "settings": {
+            "title": "Umbrellas"
+          }
+        }
+      ]
+    }
+  ],
+  "enabled_on": {
+    "templates": ["index", "page", "collection", "product"]
+  }
+}
+{% endschema %}

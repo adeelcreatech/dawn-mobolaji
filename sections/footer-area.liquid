@@ -1,0 +1,383 @@
+<style>
+  footer {
+    background-color: #E7D8C7;
+    padding: 80px 0px 10px;
+  }
+  .footer-main {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 40px;
+    margin-bottom: 50px;
+  }
+  /* Col 1 */
+  footer .footer-main .footer-brand {
+    width: 45%;
+  }
+  footer .footer-main .footer-brand .brand-logo {
+    display: inline-flex;
+    flex-direction: column;
+    margin-bottom: 18px;
+  }
+  footer .footer-main .footer-brand .brand-logo a {
+    display: flex;
+    flex-direction: column;
+    text-decoration: none;
+}
+
+  footer .footer-main .footer-brand .brand-logo .logo-name {
+    font-family: 'Cormorant Garamond', serif;
+    font-weight: 400;
+    font-size: 84px;
+    line-height: 60px;
+    letter-spacing: 0px;
+    color: #3F3A36;
+  }
+  footer .footer-main .footer-brand .brand-logo .logo-sub {
+    font-family: 'Inter', sans-serif;
+    font-size: 16px;
+    line-height: 26px;
+    letter-spacing: 3.84px;
+    font-weight: 400;
+    text-transform: uppercase;
+    color: #3F3A36;
+    text-align: center;
+  }
+  footer .footer-main .footer-brand p.brand-tagline {
+    max-width: 440px;
+    line-height: 22px;
+    color: #3F3A36;
+    margin-bottom: 24px;
+  }
+  footer .footer-main .footer-brand .social-icons {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+  }
+  footer .footer-main .footer-brand .social-icons .social-icon a {
+    width: 35px;
+    height: 35px;
+    border-radius: 50%;
+    background-color: #FBF8F3;
+    color: #8A6A4A;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.2s ease-in-out;
+  }
+  footer .footer-main .footer-brand .social-icons .social-icon a:hover {
+    background-color: #8A6A4A;
+  }
+  footer .footer-main .footer-brand .social-icons .social-icon a svg {
+    height: 15px;
+    fill: #8A6A4A;
+  }
+  footer .footer-main .footer-brand .social-icons .social-icon a:hover svg path {
+    fill: #ffffff !important;
+  }
+
+  /* Col 2 */
+  footer .footer-main .footer-links {
+    width: 55%;
+    display: flex;
+    justify-content: space-between;
+  }
+  footer .footer-main .footer-links .footer-col h3 {
+    color: #3F3A36;
+    margin-bottom: 20px;
+  }
+  footer .footer-main .footer-links .footer-col ul {
+    list-style: none;
+    padding-left: 0px;
+    display: flex;
+    flex-direction: column;
+    gap: 7px;
+  }
+  footer .footer-main .footer-links .footer-col ul li a {
+    font-family: 'Inter', sans-serif;
+    font-size: 16px;
+    line-height: 28px;
+    letter-spacing: 0px;
+    font-weight: 400;
+    text-decoration: none;
+    color: #3F3A36;
+    transition: color 0.5s;
+  }
+  footer .footer-main .footer-links .footer-col ul li a:hover {
+    color: #8A6A4A;
+  }
+
+  /* Bottom Bar */
+  footer .footer-bottom {
+    border-top: 1px solid #DDD2C6;
+    padding-top: 20px;
+    text-align: center;
+  }
+  footer .footer-bottom p {
+    font-family: 'Inter', sans-serif;
+    font-size: 15px;
+    line-height: 24px;
+    letter-spacing: 0px;
+    font-weight: 400;
+    color: #3F3A36;
+    margin-top: 0px;
+    margin-bottom: 0px;
+  }
+</style>
+
+<footer>
+  <div class="footer-main container-shell">
+
+    <!-- Col 1: Brand -->
+    <div class="footer-brand">
+      <div class="brand-logo">
+        <a href="{{ routes.root_url }}">
+            {% if section.settings.logo_name != blank %}
+                <span class="logo-name">{{ section.settings.logo_name }}</span>
+            {% endif %}
+            {% if section.settings.logo_sub != blank %}
+            <span class="logo-sub">{{ section.settings.logo_sub }}</span>
+            {% endif %}
+        </a>
+      </div>
+      {% if section.settings.brand_tagline != blank %}
+        <p class="brand-tagline">{{ section.settings.brand_tagline }}</p>
+      {% endif %}
+
+      <!-- Social Icons -->
+      <div class="social-icons">
+
+        {% if section.settings.facebook_url != blank %}
+        <div class="social-icon">
+          <a href="{{ section.settings.facebook_url }}" target="_blank" rel="noopener noreferrer" aria-label="Facebook">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 15 28" height="28" width="15">
+              <path fill="#8A6A4A" d="M9.67184 6.14751V9.99388H14.4286L13.6754 15.1752H9.67184V27.1126C8.86915 27.224 8.04791 27.2821 7.2143 27.2821C6.25207 27.2821 5.30714 27.2054 4.38696 27.057V15.1752H0V9.99388H4.38696V5.28768C4.38696 2.36795 6.75297 0 9.67308 0V0.00247676C9.68174 0.00247676 9.68916 0 9.69781 0H14.4298V4.48104H11.3378C10.4189 4.48104 9.67308 5.22706 9.67308 6.14628L9.67184 6.14751Z"/>
+            </svg>
+          </a>
+        </div>
+        {% endif %}
+
+        {% if section.settings.tiktok_url != blank %}
+        <div class="social-icon">
+          <a href="{{ section.settings.tiktok_url }}" target="_blank" rel="noopener noreferrer" aria-label="TikTok">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 17 20" height="20" width="17">
+              <path fill="#8A6A4A" d="M16.755 4.68394V8.01811C16.1725 7.9612 15.4156 7.82883 14.5783 7.52201C13.4849 7.12117 12.6711 6.5731 12.138 6.14875V12.8876L12.1244 12.8666C12.1331 13.0002 12.138 13.1363 12.138 13.2736C12.138 16.6202 9.41582 19.3444 6.06902 19.3444C2.72222 19.3444 0 16.6202 0 13.2736C0 9.92708 2.72222 7.20158 6.06902 7.20158C6.39677 7.20158 6.71835 7.22756 7.0325 7.27829V10.5642C6.73071 10.4566 6.40667 10.3984 6.06902 10.3984C4.48467 10.3984 3.19468 11.6876 3.19468 13.2736C3.19468 14.8597 4.48467 16.1488 6.06902 16.1488C7.65337 16.1488 8.94336 14.8584 8.94336 13.2736C8.94336 13.2142 8.94212 13.1549 8.93841 13.0955V0H12.2691C12.2815 0.282075 12.2926 0.566631 12.305 0.848706C12.3273 1.4042 12.5252 1.93741 12.8702 2.37413C13.2747 2.88756 13.872 3.48388 14.7106 3.96019C15.496 4.40433 16.2331 4.5961 16.755 4.68641V4.68394Z"/>
+            </svg>
+          </a>
+        </div>
+        {% endif %}
+
+        {% if section.settings.pinterest_url != blank %}
+        <div class="social-icon">
+          <a href="{{ section.settings.pinterest_url }}" target="_blank" rel="noopener noreferrer" aria-label="Pinterest">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 26" height="26" width="20">
+              <path fill="#8A6A4A" d="M8.2314 16.5902C8.21037 16.6632 8.19059 16.7251 8.17451 16.7869C7.24072 20.4465 7.13682 21.2593 6.17706 22.9592C5.71944 23.767 5.20369 24.5329 4.63353 25.2653C4.56921 25.3482 4.5086 25.4546 4.37997 25.4286C4.23898 25.3989 4.22785 25.2715 4.21301 25.1589C4.05964 24.0467 3.9743 22.932 4.01141 21.8086C4.05964 20.3463 4.24022 19.844 6.12512 11.9162C6.15233 11.7949 6.1214 11.6947 6.08182 11.5859C5.63039 10.3685 5.54134 9.13254 5.93588 7.88052C6.78928 5.17606 9.85409 4.96945 10.3896 7.20007C10.7199 8.57952 9.84667 10.3858 9.17632 13.0556C8.62099 15.2578 11.2133 16.824 13.4285 15.2157C15.4717 13.7336 16.2645 10.1804 16.1136 7.66154C15.8167 2.63985 10.3117 1.55486 6.8202 3.17185C2.81665 5.0239 1.90636 9.98742 3.71458 12.2564C3.94339 12.5447 4.37503 12.7216 4.29959 13.0135C4.18333 13.4676 4.08067 13.9253 3.95451 14.3769C3.86051 14.7134 3.32498 14.8359 2.98486 14.6973C2.31822 14.4276 1.76289 14.0033 1.31269 13.4441C-0.222187 11.5425 -0.661253 7.78156 1.36835 4.59707C3.61687 1.0699 7.79975 -0.357807 11.619 0.075203C16.1804 0.593578 19.0634 3.71125 19.6026 7.24833C19.8487 8.85912 19.6719 12.8317 17.411 15.6401C14.81 18.8666 10.5937 19.0806 8.6482 17.0999C8.49855 16.9478 8.37858 16.7708 8.2314 16.589V16.5902Z" clip-rule="evenodd" fill-rule="evenodd"/>
+            </svg>
+          </a>
+        </div>
+        {% endif %}
+
+        {% if section.settings.youtube_url != blank %}
+        <div class="social-icon">
+          <a href="{{ section.settings.youtube_url }}" target="_blank" rel="noopener noreferrer" aria-label="YouTube">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 23 16" height="16" width="23">
+              <path fill="#8A6A4A" d="M22.3594 4.21633C22.2209 2.87894 21.9229 1.40053 20.8258 0.623581C19.9761 0.0210785 18.8593 -0.00119549 17.8166 4.16813e-05C15.6127 4.16813e-05 13.4074 0.00375803 11.2034 0.0049952C9.08355 0.00746955 6.96365 0.00870521 4.84376 0.0111796C3.95821 0.0111796 3.09739 -0.0568664 2.27491 0.326657C1.56869 0.655745 1.01584 1.28176 0.68314 1.97829C0.221811 2.94699 0.125345 4.04436 0.0696883 5.11575C-0.0329668 7.06677 -0.0218355 9.02274 0.100608 10.9725C0.190895 12.3953 0.419701 13.9677 1.51922 14.8746C2.49383 15.6775 3.86916 15.7171 5.13317 15.7183C9.14538 15.722 13.1588 15.7257 17.1723 15.7282C17.6868 15.7295 18.2236 15.7196 18.748 15.6626C19.7795 15.5513 20.7627 15.2556 21.4256 14.491C22.0948 13.7203 22.2667 12.6477 22.3681 11.6319C22.6155 9.16749 22.613 6.67954 22.3594 4.21633ZM8.88318 11.3189V4.40933L14.8644 7.86351L8.88318 11.3189Z"/>
+            </svg>
+          </a>
+        </div>
+        {% endif %}
+
+      </div>
+    </div>
+
+    <!-- Col 2: Navigation Columns (blocks) + Contact -->
+    <div class="footer-links">
+
+      {% for block in section.blocks %}
+        {% if block.type == 'nav_column' %}
+        <div class="footer-col" {{ block.shopify_attributes }}>
+          {% if block.settings.column_title != blank %}
+            <h3>{{ block.settings.column_title }}</h3>
+          {% endif %}
+          {% if block.settings.menu != blank %}
+            <ul>
+              {% assign nav_menu = linklists[block.settings.menu] %}
+              {% for link in nav_menu.links %}
+                <li><a href="{{ link.url }}">{{ link.title }}</a></li>
+              {% endfor %}
+            </ul>
+          {% endif %}
+        </div>
+        {% endif %}
+      {% endfor %}
+
+      <!-- Contact Column -->
+      <div class="footer-col">
+        {% if section.settings.contact_title != blank %}
+          <h3>{{ section.settings.contact_title }}</h3>
+        {% endif %}
+        <ul>
+          {% if section.settings.contact_phone != blank %}
+            <li>Phone: <a href="tel:{{ section.settings.contact_phone }}">{{ section.settings.contact_phone }}</a></li>
+          {% endif %}
+          {% if section.settings.contact_email != blank %}
+            <li>Email: <a href="mailto:{{ section.settings.contact_email }}">{{ section.settings.contact_email }}</a></li>
+          {% endif %}
+        </ul>
+      </div>
+
+    </div>
+
+  </div>
+
+  <!-- Bottom Bar -->
+  <div class="footer-bottom">
+    <p>{{ section.settings.copyright_text }}</p>
+  </div>
+</footer>
+
+{% schema %}
+{
+  "name": "Footer",
+  "tag": "section",
+  "class": "footer-section",
+  "settings": [
+
+    {
+      "type": "header",
+      "content": "Brand"
+    },
+    {
+      "type": "text",
+      "id": "logo_name",
+      "label": "Logo Name",
+      "default": "Lanai"
+    },
+    {
+      "type": "text",
+      "id": "logo_sub",
+      "label": "Logo Subtitle",
+      "default": "Lifestyle"
+    },
+    {
+      "type": "textarea",
+      "id": "brand_tagline",
+      "label": "Brand Tagline",
+      "default": "Curated outdoor furniture, poolside pieces, and refined accents for elevated open-air living."
+    },
+
+    {
+      "type": "header",
+      "content": "Social Media Links"
+    },
+    {
+      "type": "url",
+      "id": "facebook_url",
+      "label": "Facebook URL"
+    },
+    {
+      "type": "url",
+      "id": "tiktok_url",
+      "label": "TikTok URL"
+    },
+    {
+      "type": "url",
+      "id": "pinterest_url",
+      "label": "Pinterest URL"
+    },
+    {
+      "type": "url",
+      "id": "youtube_url",
+      "label": "YouTube URL"
+    },
+
+    {
+      "type": "header",
+      "content": "Contact Column"
+    },
+    {
+      "type": "text",
+      "id": "contact_title",
+      "label": "Contact Column Title",
+      "default": "Contact"
+    },
+    {
+      "type": "text",
+      "id": "contact_phone",
+      "label": "Phone Number",
+      "default": "123 456 789"
+    },
+    {
+      "type": "text",
+      "id": "contact_email",
+      "label": "Email Address",
+      "default": "Info@lanailifestyle.com"
+    },
+
+    {
+      "type": "header",
+      "content": "Bottom Bar"
+    },
+    {
+      "type": "text",
+      "id": "copyright_text",
+      "label": "Copyright Text",
+      "default": "© 2026 Lanai Lifestyle. All Rights Reserved."
+    }
+
+  ],
+
+  "blocks": [
+    {
+      "type": "nav_column",
+      "name": "Navigation Column",
+      "settings": [
+        {
+          "type": "text",
+          "id": "column_title",
+          "label": "Column Heading",
+          "default": "Quick Links"
+        },
+        {
+          "type": "link_list",
+          "id": "menu",
+          "label": "Navigation Menu"
+        }
+      ]
+    }
+  ],
+
+  "max_blocks": 3,
+
+  "presets": [
+    {
+      "name": "Footer",
+      "category": "Footer",
+      "blocks": [
+        {
+          "type": "nav_column",
+          "settings": {
+            "column_title": "Quick Links",
+            "menu": "main-menu"
+          }
+        },
+        {
+          "type": "nav_column",
+          "settings": {
+            "column_title": "Support",
+            "menu": "footer-support"
+          }
+        },
+        {
+          "type": "nav_column",
+          "settings": {
+            "column_title": "Brand",
+            "menu": "footer-brand"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}
