@@ -46,8 +46,9 @@
         "card_xWQMrL": {
           "type": "card",
           "settings": {
-            "card_label": "Lanai Lounge",
-            "card_link": "#"
+            "card_image": "shopify://shop_images/Frame_13.png",
+            "card_label": "Clothing",
+            "card_link": "shopify://collections/clothing"
           }
         }
       },
