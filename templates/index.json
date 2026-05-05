@@ -94,6 +94,21 @@
         "secondary_button_link": "#"
       }
     },
+    "consignment_collab_Lp879z": {
+      "type": "consignment-collab",
+      "name": "Consignment & Collaboration",
+      "settings": {
+        "heading": "Consignment & Collaboration",
+        "description": "<p>M3030, A4 paperback artbook, journals and notebooks whose edges align with its return of colour. craftsmanship and storytelling.</p><p>If you are interested in consigning your work or exploring a collaboration, we invite you to connect.</p>",
+        "layout": "image_left",
+        "background_color": "#e7d8c7",
+        "text_color": "#1a1a1a",
+        "padding_top": 100,
+        "padding_bottom": 48,
+        "button_text": "Start a Conversation",
+        "button_link": ""
+      }
+    },
     "brand_promise_aQT47f": {
       "type": "brand-promise",
       "blocks": {
@@ -148,6 +163,7 @@
     "about_company_NPNHGQ",
     "categories_sections_i9hLdP",
     "custom_featured_collection_AW8RnK",
+    "consignment_collab_Lp879z",
     "brand_promise_aQT47f"
   ]
 }
