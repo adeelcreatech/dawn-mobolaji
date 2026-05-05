@@ -1,0 +1,296 @@
+{{ 'section-about-brand.css' | asset_url | stylesheet_tag }}
+
+<div class="about-brand-section" style="background-color: {{ section.settings.background_color }}; color: {{ section.settings.text_color }}; padding-top: {{ section.settings.padding_top }}px; padding-bottom: {{ section.settings.padding_bottom }}px;">
+  <div class="page-width">
+    {% if section.settings.image != blank %}
+      <div class="about-grid {% if section.settings.layout == 'image_right' %}grid-reverse{% endif %}">
+        <div class="about-image">
+          {{
+            section.settings.image
+            | image_url: width: 1000
+            | image_tag:
+              loading: 'lazy',
+              class: 'about-img',
+              alt: section.settings.image.alt | default: section.settings.heading
+          }}
+        </div>
+        <div class="about-content">
+          {% if section.settings.heading != blank %}
+            <h2 class="about-heading">{{ section.settings.heading | escape }}</h2>
+          {% endif %}
+          <div class="about-description rte">
+            {{ section.settings.description }}
+          </div>
+          {% if section.settings.button_text != blank and section.settings.button_link != blank %}
+            <a href="{{ section.settings.button_link }}" class="about-button">
+              {{- section.settings.button_text | escape -}}
+            </a>
+          {% endif %}
+        </div>
+      </div>
+    {% else %}
+      <div class="about-content-single">
+        {% if section.settings.heading != blank %}
+          <h2 class="about-heading">{{ section.settings.heading | escape }}</h2>
+        {% endif %}
+        <div class="about-description rte">
+          {{ section.settings.description }}
+        </div>
+        {% if section.settings.button_text != blank and section.settings.button_link != blank %}
+          <a href="{{ section.settings.button_link }}" class="about-button">
+            {{- section.settings.button_text | escape -}}
+          </a>
+        {% endif %}
+      </div>
+    {% endif %}
+  </div>
+</div>
+
+<style>
+  .about-brand-section {
+    width: 100%;
+    overflow: hidden;
+  }
+
+  .about-brand-section .page-width {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 1.5rem;
+  }
+
+  /* Grid layout (desktop) */
+  .about-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 3rem;
+    align-items: center;
+  }
+
+  /* Order control for desktop */
+  .about-grid .about-content {
+    order: 1;
+  }
+
+  .about-grid .about-image {
+    order: 2;
+  }
+
+  .about-grid.grid-reverse .about-content {
+    order: 2;
+  }
+
+  .about-grid.grid-reverse .about-image {
+    order: 1;
+  }
+
+  /* Image styling */
+  .about-img {
+    width: 100%;
+    height: auto;
+    object-fit: cover;
+    border-radius: 1rem;
+    display: block;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.05);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  }
+
+  .about-img:hover {
+    transform: scale(1.01);
+    box-shadow: 0 12px 28px rgba(0, 0, 0, 0.1);
+  }
+
+  /* Content styling */
+  .about-heading {
+    font-size: 2.5rem;
+    font-weight: 500;
+    line-height: 1.2;
+    margin: 0 0 1.25rem 0;
+    letter-spacing: -0.02em;
+    color: currentColor;
+  }
+
+  .about-description {
+    font-size: 1rem;
+    line-height: 1.6;
+    margin-bottom: 1.75rem;
+  }
+
+  .about-description p {
+    margin-bottom: 1rem;
+  }
+
+  .about-description p:last-child {
+    margin-bottom: 0;
+  }
+
+  /* Button style */
+  .about-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background: transparent;
+    border: 1px solid currentColor;
+    padding: 0.75rem 2rem;
+    font-size: 0.9rem;
+    font-weight: 500;
+    text-decoration: none;
+    transition: all 0.25s ease;
+    border-radius: 2rem;
+    letter-spacing: 0.03em;
+    color: currentColor;
+  }
+
+  .about-button:hover {
+    background-color: currentColor;
+    color: {{ section.settings.background_color }};
+    border-color: currentColor;
+  }
+
+  /* Single column (when no image) */
+  .about-content-single {
+    max-width: 800px;
+    margin: 0 auto;
+    text-align: center;
+  }
+
+  .about-content-single .about-description {
+    text-align: center;
+  }
+
+  /* Responsive: mobile */
+  @media screen and (max-width: 749px) {
+    .about-grid {
+      grid-template-columns: 1fr;
+      gap: 2rem;
+    }
+
+    /* Reset order on mobile — natural stacking (image first, then content) */
+    .about-grid .about-content,
+    .about-grid .about-image,
+    .about-grid.grid-reverse .about-content,
+    .about-grid.grid-reverse .about-image {
+      order: unset;
+    }
+
+    .about-heading {
+      font-size: 1.8rem;
+      margin-bottom: 1rem;
+    }
+
+    .about-description {
+      font-size: 0.95rem;
+    }
+
+    .about-button {
+      padding: 0.65rem 1.5rem;
+      font-size: 0.85rem;
+    }
+
+    .about-brand-section .page-width {
+      padding: 0 1.2rem;
+    }
+  }
+
+  @media screen and (min-width: 750px) and (max-width: 989px) {
+    .about-grid {
+      gap: 2rem;
+    }
+    .about-heading {
+      font-size: 2rem;
+    }
+  }
+</style>
+
+{% schema %}
+{
+  "name": "About Brand Story",
+  "settings": [
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "About Mobolaji"
+    },
+    {
+      "type": "richtext",
+      "id": "description",
+      "label": "Description",
+      "default": "<p>MOBOLAJ is a curated world of art, jewellery and clothing.</p><p>Founded by Mobolaji in 2016, Mobolaji designs contemporary collections that are inspired by the latest trends. Our collection is designed to reflect the modern woman’s lifestyle and values. We believe that fashion should be fun, stylish and comfortable. Mobolaji’s designs are made with love and care, and we hope that you will fall in love with them too.</p><p>The brand is built on refinement, cultural depth and craftsmanship. Each piece is crafted with precision and attention to detail. Mobolaji’s designs are not only beautiful but also functional. They are perfect for everyday wear or special occasions. Mobolaji’s collections are available in our online store and at select boutiques around the world.</p><p>A place for objects with beauty, style and personality.</p>"
+    },
+    {
+      "type": "image_picker",
+      "id": "image",
+      "label": "Image"
+    },
+    {
+      "type": "select",
+      "id": "layout",
+      "label": "Image position",
+      "options": [
+        { "value": "image_left", "label": "Left" },
+        { "value": "image_right", "label": "Right" }
+      ],
+      "default": "image_left",
+      "info": "Only applies when an image is selected"
+    },
+    {
+      "type": "header",
+      "content": "Colors & Spacing"
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Background color",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text color",
+      "default": "#000000"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "label": "Padding top",
+      "min": 0,
+      "max": 120,
+      "step": 4,
+      "default": 50,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "label": "Padding bottom",
+      "min": 0,
+      "max": 120,
+      "step": 4,
+      "default": 50,
+      "unit": "px"
+    },
+    {
+      "type": "header",
+      "content": "Optional button"
+    },
+    {
+      "type": "text",
+      "id": "button_text",
+      "label": "Button label",
+      "default": "Shop Collection"
+    },
+    {
+      "type": "url",
+      "id": "button_link",
+      "label": "Button link",
+      "default": "/collections/all"
+    }
+  ],
+  "presets": [
+    {
+      "name": "About Brand Story",
+      "category": "Text"
+    }
+  ]
+}
+{% endschema %}
