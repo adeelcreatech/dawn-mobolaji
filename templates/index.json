@@ -56,9 +56,9 @@
       ],
       "name": "Categories Section",
       "settings": {
-        "cat_grid_title": "Designed for the Way You Gather",
-        "cat_grid_subtitle": "Lanai Lifestyle brings together premium outdoor furnishings and elevated design for poolside spaces, lanais, and open-air living that feels both relaxed and refined.",
-        "cat_grid_btn_label": "Shop by Space",
+        "cat_grid_title": "Featured Collections",
+        "cat_grid_subtitle": "Each piece is selected for its story — from independent artists, collaborative works and in-house creations that explore form, material and meaning.",
+        "cat_grid_btn_label": "",
         "cat_grid_btn_link": ""
       }
     },
