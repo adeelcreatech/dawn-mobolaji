@@ -30,16 +30,16 @@
       "type": "mobolaji-about",
       "name": "Mobolaji About Sec",
       "settings": {
-        "image_bg": "shopify://shop_images/Frame_10.png",
-        "section_color": "#f9f9f9",
+        "image_bg": "shopify://shop_images/Frame11-3_2d86ba4e-06e3-43dc-a6ff-4e5e884b44ad.png",
+        "section_color": "rgba(0,0,0,0)",
         "layout": "image_left",
-        "subheading": "Our Story",
+        "subheading": "",
         "heading": "About MOBOLAJI",
         "descp": "<p>MOBOLAJI is a curated world of art, jewellery and clothing.</p><p>Founded by <strong>James-Augustus</strong>, MOBOLAJI brings together selected works, consignments and original in house design across three connected worlds: visual art, adornment and dress.</p><p>The brand is built on refinement, cultural depth and considered taste. Each piece is chosen for its presence, feeling and ability to live beyond trend — whether that is an artwork for a room, jewellery with character, or clothing designed with intention.</p><p>MOBOLAJI is not simply a store. It is a house of selection.</p><p>A place for objects with beauty, story and permanence.</p>",
         "btn_text": "",
         "btn_url": "",
         "background_color": "#f6f1e8",
-        "text_color": "#000000",
+        "text_color": "#3f3a36",
         "padding_top": 80,
         "padding_bottom": 80
       }
