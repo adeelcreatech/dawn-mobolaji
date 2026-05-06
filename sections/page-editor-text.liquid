@@ -2,7 +2,7 @@
   <div class="container-shell">
     <div class="editor-content">
       {% if section.settings.heading != blank %}
-        <h1 class="editor-heading">{{ section.settings.heading | escape }}</h1>
+        <h2 class="editor-heading">{{ section.settings.heading | escape }}</h2>
       {% endif %}
       <div class="editor-text rte">
         {{ section.settings.page_content }}
