@@ -1,0 +1,172 @@
+<div class="page-editor-section" style="background-color: {{ section.settings.background_color }}; color: {{ section.settings.text_color }}; padding-top: {{ section.settings.padding_top }}px; padding-bottom: {{ section.settings.padding_bottom }}px;">
+  <div class="page-width">
+    <div class="editor-content">
+      {% if section.settings.heading != blank %}
+        <h1 class="editor-heading">{{ section.settings.heading | escape }}</h1>
+      {% endif %}
+      <div class="editor-text rte">
+        {{ section.settings.page_content }}
+      </div>
+    </div>
+  </div>
+</div>
+
+<style>
+  .page-editor-section {
+    width: 100%;
+  }
+
+  .page-editor-section .page-width {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 1.5rem;
+  }
+
+  .editor-content {
+    max-width: 800px;
+    margin: 0 auto;
+  }
+
+  .editor-heading {
+    font-size: 2.5rem;
+    font-weight: 500;
+    line-height: 1.2;
+    margin: 0 0 1.5rem 0;
+    letter-spacing: -0.02em;
+    text-align: center;
+    color: currentColor;
+  }
+
+  .editor-text {
+    font-size: 1rem;
+    line-height: 1.7;
+  }
+
+  .editor-text h1,
+  .editor-text h2,
+  .editor-text h3,
+  .editor-text h4,
+  .editor-text h5,
+  .editor-text h6 {
+    margin-top: 1.5em;
+    margin-bottom: 0.5em;
+    font-weight: 500;
+  }
+
+  .editor-text h1 { font-size: 2rem; }
+  .editor-text h2 { font-size: 1.75rem; }
+  .editor-text h3 { font-size: 1.5rem; }
+  .editor-text h4 { font-size: 1.25rem; }
+
+  .editor-text p {
+    margin-bottom: 1.25em;
+  }
+
+  .editor-text a {
+    color: currentColor;
+    text-decoration: underline;
+  }
+
+  .editor-text a:hover {
+    opacity: 0.7;
+  }
+
+  .editor-text ul,
+  .editor-text ol {
+    margin: 1em 0;
+    padding-left: 1.5em;
+  }
+
+  .editor-text li {
+    margin-bottom: 0.5em;
+  }
+
+  .editor-text blockquote {
+    border-left: 4px solid currentColor;
+    margin: 1.5em 0;
+    padding-left: 1.5em;
+    font-style: italic;
+    opacity: 0.8;
+  }
+
+  .editor-text img {
+    max-width: 100%;
+    height: auto;
+    margin: 1.5em 0;
+    border-radius: 0.5rem;
+  }
+
+  @media screen and (max-width: 749px) {
+    .editor-heading {
+      font-size: 1.8rem;
+    }
+    .editor-text {
+      font-size: 0.95rem;
+    }
+    .page-editor-section .page-width {
+      padding: 0 1.2rem;
+    }
+  }
+</style>
+
+{% schema %}
+{
+  "name": "Page Editor Text",
+  "settings": [
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Welcome"
+    },
+    {
+      "type": "richtext",
+      "id": "page_content",
+      "label": "Page Content",
+      "default": "<p>This is the default page editor text. You can write anything here — stories, product details, lookbooks, or brand philosophy.</p><p>Use the rich text toolbar to add headings, lists, links, or images. The styling matches a clean, editorial layout that adapts to any screen size.</p><h2>Why choose this section?</h2><ul><li>Fully customizable through the theme editor</li><li>Responsive typography and spacing</li><li>Supports all standard HTML formatting from Shopify's rich text editor</li></ul><p><a href='/collections/all'>Explore the collection →</a></p>"
+    },
+    {
+      "type": "header",
+      "content": "Colors & Spacing"
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Background Color",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text Color",
+      "default": "#1a1a1a"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "label": "Padding top",
+      "min": 0,
+      "max": 120,
+      "step": 4,
+      "default": 48,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "label": "Padding bottom",
+      "min": 0,
+      "max": 120,
+      "step": 4,
+      "default": 48,
+      "unit": "px"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Page Editor Text",
+      "category": "Text"
+    }
+  ]
+}
+{% endschema %}
