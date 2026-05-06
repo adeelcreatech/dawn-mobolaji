@@ -58,12 +58,32 @@
         "button_text": "Start a Conversation",
         "button_link": ""
       }
+    },
+    "mobolaji_mission_3MVL9a": {
+      "type": "mobolaji-mission",
+      "name": "Mudder Mission",
+      "settings": {
+        "image_bg": "shopify://shop_images/Frame11-4.png",
+        "layout": "image_left",
+        "subheading": "Who We Are",
+        "heading": "The Founder",
+        "descp": "<p>MOBOLAJI was founded by <strong>James Augustus</strong>, whose background spans Accounting and Finance, Art Business and a long-standing interest in visual culture.</p><p>His approach combines commercial discipline with instinct, taste and a belief in refinement. MOBOLAJI is the result of that vision: a curated house for art, jewellery and clothing, built around pieces with beauty, story and permanence.</p>",
+        "heading2": "What We Stand For",
+        "descp2": "<p>MOBOLAJI stands for beauty, quality, individuality, community and evolution. </p><p>We believe in choosing fewer things, better things, and pieces that carry feeling. </p><p>Beyond the objects themselves, MOBOLAJI is also about bringing people together — through art, style, conversation and carefully considered events.</p><p>This is a brand for people who want their<br/>surroundings, clothing and adornment to say something — without needing to<br/>shout.</p><p> </p>",
+        "btn_text": "",
+        "btn_link": "",
+        "section_color": "#f6f1e8",
+        "text_color": "#3f3a36",
+        "padding_top": 60,
+        "padding_bottom": 80
+      }
     }
   },
   "order": [
     "main",
     "mobolaji_inner_banner_WBrTYJ",
     "mobolaji_about_cTd96n",
-    "consignment_collab_HMbYYk"
+    "consignment_collab_HMbYYk",
+    "mobolaji_mission_3MVL9a"
   ]
 }
