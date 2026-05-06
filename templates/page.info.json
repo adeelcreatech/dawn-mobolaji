@@ -25,10 +25,23 @@
         "heading": "{{ page.title }}",
         "txt_color": "#f6f1e8"
       }
+    },
+    "page_editor_text_Wm3f7b": {
+      "type": "page-editor-text",
+      "name": "Page Editor Text",
+      "settings": {
+        "heading": "Welcome",
+        "page_content": "{{ page.content }}",
+        "background_color": "#ffffff",
+        "text_color": "#1a1a1a",
+        "padding_top": 48,
+        "padding_bottom": 48
+      }
     }
   },
   "order": [
     "main",
-    "mobolaji_inner_banner_WBrTYJ"
+    "mobolaji_inner_banner_WBrTYJ",
+    "page_editor_text_Wm3f7b"
   ]
 }
