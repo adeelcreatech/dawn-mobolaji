@@ -1,41 +1,41 @@
-<div class="mobolaji-inner-banner" style="background: url('{{ section.settings.image_bg | img_url:''  }}');">
+<div class="mobolaji-inner-banner" style="background-image: url('{{ section.settings.image_bg | img_url: 'master' }}'); background-size: cover; background-position: center;">
   <div class="container-shell">
-       <div class="row">
-           <div class="col-md-12 col-xs-12 inner-banner-mid">
-              <h1 class="inner-title">{{ section.settings.heading }}</h1>
-           </div> 
-       </div>
+    <div class="row">
+      <div class="col-md-12 col-xs-12 inner-banner-mid">
+        <h1 class="inner-title" style="color: {{ section.settings.txt_color }};">{{ section.settings.heading }}</h1>
+      </div>
+    </div>
   </div>
 </div>
 
 
 
-
 {% schema %}
-  {
-    "name": "Mobolaji Inner Banner",
-   "settings": [
-            {
-                "type":"image_picker",
-                "id":"image_bg",
-                "label":"Section Image"
-            },
-            {
-                 "type":"text",
-                 "id":"heading",
-                 "label":"Page Title"s
-            },
-            {
-                "type":"color",
-                "id":"txt_color",
-                "label":"Text Color"
-            }
-    ],
-    "presets": [
-          {
-          "name": "Mobolaji Inner Banner",
-          "category": "custom"
-          }
-     ]
-  }
+{
+  "name": "Mobolaji Inner Banner",
+  "settings": [
+    {
+      "type": "image_picker",
+      "id": "image_bg",
+      "label": "Section Image"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Page Title"
+    },
+    {
+      "type": "color",
+      "id": "txt_color",
+      "label": "Text Color",
+      "default": "#ffffff"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Mobolaji Inner Banner",
+      "category": "custom"
+    }
+  ]
+}
 {% endschema %}
