@@ -30,12 +30,12 @@
       "type": "page-editor-text",
       "name": "Page Editor Text",
       "settings": {
-        "heading": "Welcome",
+        "heading": "{{ page.title }}",
         "page_content": "{{ page.content }}",
-        "background_color": "#ffffff",
-        "text_color": "#1a1a1a",
-        "padding_top": 48,
-        "padding_bottom": 48
+        "background_color": "#f6f1e8",
+        "text_color": "#3f3a36",
+        "padding_top": 60,
+        "padding_bottom": 120
       }
     }
   },
