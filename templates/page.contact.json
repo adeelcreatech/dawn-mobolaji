@@ -23,7 +23,7 @@
       "settings": {
         "image_bg": "shopify://shop_images/Hero.png",
         "heading": "{{ page.title }}",
-        "txt_color": "#ffffff"
+        "txt_color": "#f6f1e8"
       }
     },
     "form": {
