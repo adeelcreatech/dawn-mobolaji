@@ -1,0 +1,313 @@
+<div class="mobolaji-about-section" style="background-color: {{ section.settings.background_color }}; color: {{ section.settings.text_color }}; padding-top: {{ section.settings.padding_top }}px; padding-bottom: {{ section.settings.padding_bottom }}px;">
+  <div class="page-width">
+    <div class="about-grid {% if section.settings.layout == 'image_right' %}grid-reverse{% endif %}">
+      <div class="about-image">
+        {% if section.settings.image_bg != blank %}
+          {{
+            section.settings.image_bg
+            | image_url: width: 1000
+            | image_tag:
+              loading: 'lazy',
+              class: 'about-img',
+              alt: section.settings.image_bg.alt | default: section.settings.heading
+          }}
+        {% else %}
+          <div class="placeholder-image">{{ 'image' | placeholder_svg_tag: 'placeholder-svg' }}</div>
+        {% endif %}
+      </div>
+      <div class="about-content" style="background-color: {{ section.settings.section_color }};">
+        {% if section.settings.subheading != blank %}
+          <h5 class="about-subheading">{{ section.settings.subheading | escape }}</h5>
+        {% endif %}
+        {% if section.settings.heading != blank %}
+          <h2 class="about-heading">{{ section.settings.heading | escape }}</h2>
+        {% endif %}
+        <div class="about-description rte">
+          {{ section.settings.descp }}
+        </div>
+        {% if section.settings.btn_text != blank and section.settings.btn_url != blank %}
+          <a href="{{ section.settings.btn_url }}" class="about-button">
+            {{- section.settings.btn_text | escape -}}
+          </a>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+</div>
+
+<style>
+  .mobolaji-about-section {
+    width: 100%;
+    overflow: hidden;
+  }
+
+  .mobolaji-about-section .page-width {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 1.5rem;
+  }
+
+  /* Grid layout (desktop) */
+  .about-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0;
+    align-items: stretch;
+  }
+
+  /* Order control for desktop */
+  .about-grid .about-content {
+    order: 1;
+  }
+
+  .about-grid .about-image {
+    order: 2;
+  }
+
+  .about-grid.grid-reverse .about-content {
+    order: 2;
+  }
+
+  .about-grid.grid-reverse .about-image {
+    order: 1;
+  }
+
+  /* Image styling */
+  .about-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+
+  .placeholder-image {
+    background: #f0f0f0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    min-height: 300px;
+  }
+
+  .placeholder-svg {
+    width: 80%;
+    max-width: 250px;
+    opacity: 0.5;
+  }
+
+  /* Content styling (right side with optional background color) */
+  .about-content {
+    padding: 3rem 2.5rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    height: 100%;
+  }
+
+  .about-subheading {
+    font-size: 0.9rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    margin: 0 0 0.75rem 0;
+    font-weight: 500;
+    color: currentColor;
+    opacity: 0.7;
+  }
+
+  .about-heading {
+    font-size: 2.5rem;
+    font-weight: 500;
+    line-height: 1.2;
+    margin: 0 0 1.25rem 0;
+    letter-spacing: -0.02em;
+    color: currentColor;
+  }
+
+  .about-description {
+    font-size: 1rem;
+    line-height: 1.6;
+    margin-bottom: 1.75rem;
+  }
+
+  .about-description p {
+    margin-bottom: 1rem;
+  }
+
+  .about-description p:last-child {
+    margin-bottom: 0;
+  }
+
+  /* Button style (matching previous sections) */
+  .about-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background: transparent;
+    border: 1px solid currentColor;
+    padding: 0.75rem 2rem;
+    font-size: 0.9rem;
+    font-weight: 500;
+    text-decoration: none;
+    transition: all 0.25s ease;
+    border-radius: 2rem;
+    letter-spacing: 0.03em;
+    color: currentColor;
+    align-self: flex-start;
+  }
+
+  .about-button:hover {
+    background-color: currentColor;
+    color: {{ section.settings.section_color | default: '#ffffff' }};
+    border-color: currentColor;
+  }
+
+  /* Responsive: mobile */
+  @media screen and (max-width: 749px) {
+    .about-grid {
+      grid-template-columns: 1fr;
+      gap: 0;
+    }
+
+    .about-grid .about-content,
+    .about-grid .about-image,
+    .about-grid.grid-reverse .about-content,
+    .about-grid.grid-reverse .about-image {
+      order: unset;
+    }
+
+    .about-heading {
+      font-size: 1.8rem;
+      margin-bottom: 1rem;
+    }
+
+    .about-subheading {
+      font-size: 0.8rem;
+    }
+
+    .about-description {
+      font-size: 0.95rem;
+    }
+
+    .about-button {
+      padding: 0.65rem 1.5rem;
+      font-size: 0.85rem;
+    }
+
+    .about-content {
+      padding: 2rem 1.5rem;
+    }
+
+    .mobolaji-about-section .page-width {
+      padding: 0;
+    }
+  }
+
+  @media screen and (min-width: 750px) and (max-width: 989px) {
+    .about-content {
+      padding: 2rem;
+    }
+    .about-heading {
+      font-size: 2rem;
+    }
+  }
+</style>
+
+{% schema %}
+{
+  "name": "Mobolaji About Sec",
+  "settings": [
+    {
+      "type": "image_picker",
+      "id": "image_bg",
+      "label": "Section Image"
+    },
+    {
+      "type": "color",
+      "id": "section_color",
+      "label": "Content Background Color",
+      "default": "#f9f9f9"
+    },
+    {
+      "type": "select",
+      "id": "layout",
+      "label": "Image position",
+      "options": [
+        { "value": "image_left", "label": "Left" },
+        { "value": "image_right", "label": "Right" }
+      ],
+      "default": "image_left"
+    },
+    {
+      "type": "text",
+      "id": "subheading",
+      "label": "Sub Heading",
+      "default": "Our Story"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "About Mobolaji"
+    },
+    {
+      "type": "richtext",
+      "id": "descp",
+      "label": "Description",
+      "default": "<p>MOBOLAJ is a curated world of art, jewellery and clothing. Founded in 2016, Mobolaji designs contemporary collections that reflect the modern woman's lifestyle and values.</p>"
+    },
+    {
+      "type": "text",
+      "id": "btn_text",
+      "label": "Button Text",
+      "default": "Learn More"
+    },
+    {
+      "type": "url",
+      "id": "btn_url",
+      "label": "Button URL"
+    },
+    {
+      "type": "header",
+      "content": "Colors & Spacing"
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Outer Section Background Color",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text Color (for right side)",
+      "default": "#000000"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "label": "Padding top",
+      "min": 0,
+      "max": 120,
+      "step": 4,
+      "default": 48,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "label": "Padding bottom",
+      "min": 0,
+      "max": 120,
+      "step": 4,
+      "default": 48,
+      "unit": "px"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Mobolaji About Sec",
+      "category": "custom"
+    }
+  ]
+}
+{% endschema %}
