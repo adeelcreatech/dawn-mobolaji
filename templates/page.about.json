@@ -43,11 +43,27 @@
         "padding_top": 48,
         "padding_bottom": 48
       }
+    },
+    "consignment_collab_HMbYYk": {
+      "type": "consignment-collab",
+      "name": "Consignment & Collaboration",
+      "settings": {
+        "heading": "Our World",
+        "description": "<p>MOBOLAJI exists at the meeting point of art, personal style and collecting.</p><p>We work with artists, makers and independent creatives, while also developing original pieces in-house. The aim is to create a space where people can discover work that feels distinctive, expressive and quietly powerful. </p><p>From one-off artworks to jewellery and clothing, every category is connected by the same principle: <strong>taste first.</strong></p>",
+        "layout": "image_left",
+        "background_color": "#e7d8c7",
+        "text_color": "#3f3a36",
+        "padding_top": 48,
+        "padding_bottom": 48,
+        "button_text": "Start a Conversation",
+        "button_link": ""
+      }
     }
   },
   "order": [
     "main",
     "mobolaji_inner_banner_WBrTYJ",
-    "mobolaji_about_cTd96n"
+    "mobolaji_about_cTd96n",
+    "consignment_collab_HMbYYk"
   ]
 }
