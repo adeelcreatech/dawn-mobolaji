@@ -21,24 +21,16 @@
             "menu": "footer"
           }
         },
-        "nav_column_HAYfjH": {
-          "type": "nav_column",
-          "settings": {
-            "column_title": "Support",
-            "menu": "customer-account-main-menu"
-          }
-        },
         "nav_column_arUWim": {
           "type": "nav_column",
           "settings": {
-            "column_title": "Brand",
-            "menu": ""
+            "column_title": "Support",
+            "menu": "support"
           }
         }
       },
       "block_order": [
         "nav_column_F8XKVW",
-        "nav_column_HAYfjH",
         "nav_column_arUWim"
       ],
       "name": "Footer Area",
