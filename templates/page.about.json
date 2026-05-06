@@ -17,7 +17,7 @@
         "padding_bottom": 36
       }
     },
-    "mobolaji_inner_banner_eqgAQ6": {
+    "mobolaji_inner_banner_Nn7LqD": {
       "type": "mobolaji-inner-banner",
       "name": "Mobolaji Inner Banner",
       "settings": {
@@ -29,6 +29,6 @@
   },
   "order": [
     "main",
-    "mobolaji_inner_banner_eqgAQ6"
+    "mobolaji_inner_banner_Nn7LqD"
   ]
 }
