@@ -652,6 +652,12 @@ footer {
 .footer-main {
     flex-flow: column;
 }
+.brand-promise .brand-promise-cards {
+    flex-flow: column;
+}
+    .brand-promise .brand-promise-cards .brand-promise-box {
+        width: 100% !important;
+    }
 
 }
 
