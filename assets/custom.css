@@ -31,6 +31,20 @@ p {
   letter-spacing: 0px;
   font-weight: 400;
 }
+
+sticky-header.header-wrapper {
+    position: absolute;
+    left: 0;
+    right: 0;
+    background: transparent;
+    width: 100%;
+}
+
+sticky-header.header-wrapper.scrolled {
+    background: #e7d8c7;
+    box-shadow: 0 2px 20px #c1b4b4;
+}
+
 .btn-clean {
   font-family: 'Inter', sans-serif;
   font-size: 18px;
