@@ -228,6 +228,9 @@ sticky-header.header-wrapper header.header .header__icons span.svg-wrapper svg {
   overflow: hidden;
   height: auto;
 }
+.featured-collection-section .card a {
+    text-decoration: none;
+}
 .featured-collection-section .card img, .featured-collection-section .card video {
   position: absolute;
   top: 0; left: 0;
