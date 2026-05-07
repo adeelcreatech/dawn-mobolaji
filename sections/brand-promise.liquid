@@ -8,10 +8,15 @@
     .brand-promise .brand-promise-cards .brand-promise-box .brand-promise-icon-box {
         background-color: {{ section.settings.icon_bg_color }};
     }
+    .brand-promise .brand-promise-cards .brand-promise-box .brand-promise-icon-box svg {
+        stroke: {{ section.settings.icon_stroke_color }};
+    }
 </style>
+
 
 <section class="brand-promise" id="brand-promise-{{ section.id }}">
   <div class="brand-promise-cards container-shell">
+
     {% for block in section.blocks %}
       {% if block.type == 'promise_card' %}
         <div class="brand-promise-box" {{ block.shopify_attributes }}>
@@ -23,76 +28,17 @@
             {% endif %}
           </div>
           <h3>{{ block.settings.heading }}</h3>
+
+
+
+
+          
         </div>
       {% endif %}
     {% endfor %}
+
   </div>
 </section>
-
-<style>
-  .brand-promise-cards {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    gap: 2rem;
-    padding: 3rem 1rem;
-  }
-  .brand-promise-box {
-    flex: 1 1 200px;
-    text-align: center;
-    padding: 2rem 1rem;
-    border-radius: 1rem;
-    transition: transform 0.2s ease;
-  }
-  .brand-promise-box:hover {
-    transform: translateY(-5px);
-  }
-  .brand-promise-icon-box {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    width: 80px;
-    height: 80px;
-    border-radius: 50%;
-    margin-bottom: 1.5rem;
-  }
-  .brand-promise-icon {
-    width: 40px;
-    height: 40px;
-    object-fit: contain;
-  }
-  .icon-placeholder {
-    width: 40px;
-    height: 40px;
-    background: #ddd;
-    border-radius: 50%;
-  }
-  .brand-promise-box h3 {
-    color: {{ section.settings.heading_color }};
-    font-size: {{ section.settings.heading_size }}px;
-    font-weight: 500;
-    margin: 0;
-    line-height: 1.4;
-  }
-  @media (max-width: 768px) {
-    .brand-promise-cards {
-      gap: 1rem;
-      padding: 2rem 1rem;
-    }
-    .brand-promise-box {
-      flex-basis: calc(50% - 1rem);
-      padding: 1.5rem 0.5rem;
-    }
-    .brand-promise-icon-box {
-      width: 60px;
-      height: 60px;
-    }
-    .brand-promise-icon {
-      width: 30px;
-      height: 30px;
-    }
-  }
-</style>
 
 {% schema %}
 {
@@ -121,6 +67,12 @@
       "id": "icon_bg_color",
       "label": "Icon Box Background Color",
       "default": "#E7D8C7"
+    },
+    {
+      "type": "color",
+      "id": "icon_stroke_color",
+      "label": "Icon Stroke Color",
+      "default": "#3F3A36"
     },
     {
       "type": "header",
@@ -157,7 +109,7 @@
           "type": "image_picker",
           "id": "icon_svg",
           "label": "Image Icon",
-          "info": "Upload a square icon (recommended size: 80x80px)."
+          "info": "Upload File"
         }
       ]
     }
