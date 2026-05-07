@@ -8,9 +8,8 @@
     .brand-promise .brand-promise-cards .brand-promise-box .brand-promise-icon-box {
         background-color: {{ section.settings.icon_bg_color }};
     }
-    .brand-promise .brand-promise-cards .brand-promise-box h3 {
-        color: {{ section.settings.heading_color }};
-        font-size: {{ section.settings.heading_size }}px;
+    .brand-promise .brand-promise-cards .brand-promise-box .brand-promise-icon-box svg {
+        stroke: {{ section.settings.icon_stroke_color }};
     }
 </style>
 
@@ -21,19 +20,7 @@
       {% if block.type == 'promise_card' %}
         <div class="brand-promise-box" {{ block.shopify_attributes }}>
           <div class="brand-promise-icon-box">
-            {% if block.settings.icon_image != blank %}
-              {{
-                block.settings.icon_image
-                | image_url: width: 60
-                | image_tag:
-                  loading: 'lazy',
-                  width: 40,
-                  height: 40,
-                  class: 'brand-promise-icon'
-              }}
-            {% else %}
-              <div class="icon-placeholder">{{ 'image' | placeholder_svg_tag: 'placeholder-svg' }}</div>
-            {% endif %}
+            {{ block.settings.icon_svg }}
           </div>
           <h3>{{ block.settings.heading }}</h3>
         </div>
@@ -42,69 +29,6 @@
 
   </div>
 </section>
-
-<style>
-  .brand-promise-cards {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    gap: 2rem;
-    padding: 3rem 1rem;
-  }
-  .brand-promise-box {
-    flex: 1 1 200px;
-    text-align: center;
-    padding: 2rem 1rem;
-    border-radius: 1rem;
-    transition: transform 0.2s ease;
-  }
-  .brand-promise-box:hover {
-    transform: translateY(-5px);
-  }
-  .brand-promise-icon-box {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    width: 80px;
-    height: 80px;
-    border-radius: 50%;
-    margin-bottom: 1.5rem;
-  }
-  .brand-promise-icon {
-    width: 40px;
-    height: 40px;
-    object-fit: contain;
-    display: block;
-  }
-  .icon-placeholder {
-    width: 40px;
-    height: 40px;
-  }
-  .brand-promise-box h3 {
-    font-size: 1rem;
-    font-weight: 500;
-    margin: 0;
-    line-height: 1.4;
-  }
-  @media (max-width: 768px) {
-    .brand-promise-cards {
-      gap: 1rem;
-      padding: 2rem 1rem;
-    }
-    .brand-promise-box {
-      flex-basis: calc(50% - 1rem);
-      padding: 1.5rem 0.5rem;
-    }
-    .brand-promise-icon-box {
-      width: 60px;
-      height: 60px;
-    }
-    .brand-promise-icon {
-      width: 30px;
-      height: 30px;
-    }
-  }
-</style>
 
 {% schema %}
 {
@@ -133,6 +57,12 @@
       "id": "icon_bg_color",
       "label": "Icon Box Background Color",
       "default": "#E7D8C7"
+    },
+    {
+      "type": "color",
+      "id": "icon_stroke_color",
+      "label": "Icon Stroke Color",
+      "default": "#3F3A36"
     },
     {
       "type": "header",
@@ -166,10 +96,10 @@
           "default": "Curated Premium Assortment"
         },
         {
-          "type": "image_picker",
-          "id": "icon_image",
-          "label": "Icon Image",
-          "info": "Upload a square icon (recommended size: 80x80px)."
+          "type": "html",
+          "id": "icon_svg",
+          "label": "Icon SVG Code",
+          "info": "Paste your full <svg>...</svg> code here."
         }
       ]
     }
@@ -181,25 +111,29 @@
         {
           "type": "promise_card",
           "settings": {
-            "heading": "Curated Premium Assortment"
+            "heading": "Curated Premium Assortment",
+            "icon_svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" fill=\"none\" viewBox=\"0 0 30 30\" height=\"30\" width=\"30\"><path stroke-linejoin=\"round\" stroke-linecap=\"round\" stroke-width=\"2\" stroke=\"#3F3A36\" d=\"M14.568 14.75V10.625C14.568 10.2603 14.3893 9.91059 14.0713 9.65273C13.7532 9.39487 13.3218 9.25 12.872 9.25H9.48C9.03019 9.25 8.59881 9.39487 8.28075 9.65273C7.96269 9.91059 7.784 10.2603 7.784 10.625V14.75M21.352 25.75V21.625C21.352 21.2603 21.1733 20.9106 20.8553 20.6527C20.5372 20.3949 20.1058 20.25 19.656 20.25H16.264C15.8142 20.25 15.3828 20.3949 15.0647 20.6527C14.7467 20.9106 14.568 21.2603 14.568 21.625V25.75M28.136 28.5V1M1 14.75H28.136M1 25.75H28.136M1 1V28.5M1 3.75H28.136\"/></svg>"
           }
         },
         {
           "type": "promise_card",
           "settings": {
-            "heading": "Elevated Outdoor Style"
+            "heading": "Elevated Outdoor Style",
+            "icon_svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" fill=\"none\" viewBox=\"0 0 30 30\" height=\"30\" width=\"30\"><path stroke-linejoin=\"round\" stroke-linecap=\"round\" stroke-width=\"2\" stroke=\"#3F3A36\" d=\"M14.568 14.75V10.625C14.568 10.2603 14.3893 9.91059 14.0713 9.65273C13.7532 9.39487 13.3218 9.25 12.872 9.25H9.48C9.03019 9.25 8.59881 9.39487 8.28075 9.65273C7.96269 9.91059 7.784 10.2603 7.784 10.625V14.75M21.352 25.75V21.625C21.352 21.2603 21.1733 20.9106 20.8553 20.6527C20.5372 20.3949 20.1058 20.25 19.656 20.25H16.264C15.8142 20.25 15.3828 20.3949 15.0647 20.6527C14.7467 20.9106 14.568 21.2603 14.568 21.625V25.75M28.136 28.5V1M1 14.75H28.136M1 25.75H28.136M1 1V28.5M1 3.75H28.136\"/></svg>"
           }
         },
         {
           "type": "promise_card",
           "settings": {
-            "heading": "Designed for Poolside Living"
+            "heading": "Designed for Poolside Living",
+            "icon_svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" fill=\"none\" viewBox=\"0 0 30 30\" height=\"30\" width=\"30\"><path stroke-linejoin=\"round\" stroke-linecap=\"round\" stroke-width=\"2\" stroke=\"#3F3A36\" d=\"M14.568 14.75V10.625C14.568 10.2603 14.3893 9.91059 14.0713 9.65273C13.7532 9.39487 13.3218 9.25 12.872 9.25H9.48C9.03019 9.25 8.59881 9.39487 8.28075 9.65273C7.96269 9.91059 7.784 10.2603 7.784 10.625V14.75M21.352 25.75V21.625C21.352 21.2603 21.1733 20.9106 20.8553 20.6527C20.5372 20.3949 20.1058 20.25 19.656 20.25H16.264C15.8142 20.25 15.3828 20.3949 15.0647 20.6527C14.7467 20.9106 14.568 21.2603 14.568 21.625V25.75M28.136 28.5V1M1 14.75H28.136M1 25.75H28.136M1 1V28.5M1 3.75H28.136\"/></svg>"
           }
         },
         {
           "type": "promise_card",
           "settings": {
-            "heading": "Quality That Lasts"
+            "heading": "Quality That Lasts",
+            "icon_svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" fill=\"none\" viewBox=\"0 0 30 30\" height=\"30\" width=\"30\"><path stroke-linejoin=\"round\" stroke-linecap=\"round\" stroke-width=\"2\" stroke=\"#3F3A36\" d=\"M14.568 14.75V10.625C14.568 10.2603 14.3893 9.91059 14.0713 9.65273C13.7532 9.39487 13.3218 9.25 12.872 9.25H9.48C9.03019 9.25 8.59881 9.39487 8.28075 9.65273C7.96269 9.91059 7.784 10.2603 7.784 10.625V14.75M21.352 25.75V21.625C21.352 21.2603 21.1733 20.9106 20.8553 20.6527C20.5372 20.3949 20.1058 20.25 19.656 20.25H16.264C15.8142 20.25 15.3828 20.3949 15.0647 20.6527C14.7467 20.9106 14.568 21.2603 14.568 21.625V25.75M28.136 28.5V1M1 14.75H28.136M1 25.75H28.136M1 1V28.5M1 3.75H28.136\"/></svg>"
           }
         }
       ]
