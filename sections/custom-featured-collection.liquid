@@ -9,6 +9,7 @@
         {% for product in collection.products limit: product_limit %}
 
             <div class="card">
+                <a href="{{ product.url }}">
                 <div class="card-media">
                     {%- assign featured_img = product.featured_image -%}
                     {% if featured_img %}
@@ -25,6 +26,7 @@
                     <span class="card-title">{{ product.title }}</span>
                     <span class="price">{{ product.price | money }}</span>
                 </div>
+                </a>
             </div>
         {% endfor %}
     </div>
