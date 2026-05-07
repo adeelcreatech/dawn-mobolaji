@@ -138,13 +138,14 @@ sticky-header.header-wrapper header.header .header__icons span.svg-wrapper svg {
 
 /* Start Hero Banner Section CSS */
 .hero {
-  min-height: 740px;
-  position: relative;
-  overflow: hidden;
-  color: #ffffff;
-  display: grid;
-  place-items: center;
-  text-align: center;
+    min-height: 740px;
+    position: relative;
+    overflow: hidden;
+    color: #fff;
+    display: grid;
+    place-items: flex-end;
+    text-align: center;
+    padding-bottom: 100px;
 }
 .hero-video {
   position: absolute;
