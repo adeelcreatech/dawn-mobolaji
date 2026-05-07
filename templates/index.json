@@ -90,7 +90,7 @@
         "products_to_show": 8,
         "show_cta": true,
         "secondary_button_label": "Shop All Collections",
-        "secondary_button_link": "#"
+        "secondary_button_link": "shopify://collections/shop"
       }
     },
     "consignment_collab_Lp879z": {
