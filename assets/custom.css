@@ -655,9 +655,16 @@ footer {
 .brand-promise .brand-promise-cards {
     flex-flow: column;
 }
-    .brand-promise .brand-promise-cards .brand-promise-box {
-        width: 100% !important;
-    }
+.brand-promise .brand-promise-cards .brand-promise-box {
+    width: 100% !important;
+}
+.hero {
+    padding-bottom: 50px;
+}
+.hero h1 {
+    font-size: 38px;
+    line-height: 55px;
+}
 
 }
 
