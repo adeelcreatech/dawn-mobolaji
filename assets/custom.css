@@ -227,7 +227,7 @@ sticky-header.header-wrapper header.header .header__icons span.svg-wrapper svg {
   opacity: 1;
 }
 .featured-collection-section .card:hover img {
-  opacity: 0;
+  opacity: 1;
 }
 .featured-collection-section .card-info {
   display: flex;
