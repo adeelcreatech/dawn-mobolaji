@@ -190,11 +190,12 @@ sticky-header.header-wrapper header.header .header__icons span.svg-wrapper svg {
 /* Start Featured Collection CSS */
 
 .mobolaji-inner-banner {
-    height: 350px;
+    height: 400px;
     display: flex;
-    align-items: center;
+    align-items: flex-end;
     justify-content: center;
     text-align: center;
+    padding-bottom: 60px;
 }
 
 
@@ -636,7 +637,23 @@ sticky-header.header-wrapper header.header .header__icons span.svg-wrapper svg {
   /* End Category Slider Section CSS */
 }
 
+@media (max-width: 767px) {
 
+footer .footer-main .footer-links {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    flex-flow: column;
+    gap: 20px;
+}
+footer {
+    padding: 40px 0px 10px;
+}
+.footer-main {
+    flex-flow: column;
+}
+
+}
 
 
 @media (max-width: 768px) {
