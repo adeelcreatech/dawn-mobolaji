@@ -378,6 +378,19 @@
       };
     </script>
 
+    <script>
+      
+      $(window).on('scroll', function () {
+    var $hero = $('sticky-header.header-wrapper');
+    if ($(this).scrollTop() > $hero.outerHeight() / 2) {
+      $hero.addClass('scrolled');
+    } else {
+      $hero.removeClass('scrolled');
+    }
+  });
+      
+    </script>
+
     {%- if settings.predictive_search_enabled -%}
       <script src="{{ 'predictive-search.js' | asset_url }}" defer="defer"></script>
     {%- endif -%}
