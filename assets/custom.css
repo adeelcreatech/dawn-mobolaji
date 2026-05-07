@@ -152,12 +152,15 @@ sticky-header.header-wrapper header.header .header__icons span.svg-wrapper svg {
   z-index: 1;
 }
 .hero-content {
-  position: relative;
-  z-index: 2;
+    position: relative;
+    z-index: 2;
+    max-width: 700px;
+    margin-left: auto;
+    margin-right: auto;
 }
 .hero h1 {
-  color: #ffffff;
-  margin-bottom: 10px;
+    color: #F6F1E8;
+    margin-bottom: 40px;
 }
 .hero p {
   max-width: 780px;
