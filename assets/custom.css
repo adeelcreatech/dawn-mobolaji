@@ -358,6 +358,7 @@ sticky-header.header-wrapper header.header .header__icons span.svg-wrapper svg {
   margin: 0;
   max-width: 230px;
   color: #3F3A36;
+  height: 80px;
 }
 /* End Brand Promise Section CSS */
 
