@@ -4,7 +4,8 @@
     {{ section.settings.banner_image | image_url: width: 2200 | image_tag: class: 'hero-video', loading: 'lazy', alt: section.settings.heading }}
   {%- endif -%}
   <div class="hero-overlay" aria-hidden="true" style="background: rgba(0, 0, 0, {{ overlay_alpha }});"></div>
-  <div class="container-shell hero-content">
+  <div class="container-shell">
+  <div class="hero-content">
     {%- if section.settings.heading != blank -%}
       <h1>{{ section.settings.heading }}</h1>
     {%- endif -%}
@@ -18,6 +19,7 @@
       {%- if section.settings.secondary_button_label != blank -%}
         <a class="btn-clean soft" href="{{ section.settings.secondary_button_link | default: routes.root_url }}">{{ section.settings.secondary_button_label }}</a>
       {%- endif -%}
+    </div>
     </div>
   </div>
 </section>
