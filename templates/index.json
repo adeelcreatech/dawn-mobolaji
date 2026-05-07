@@ -9,6 +9,21 @@
  */
 {
   "sections": {
+    "mobolaji_hero_9aHrzB": {
+      "type": "mobolaji-hero",
+      "name": "Mobolaji Hero",
+      "settings": {
+        "banner_image": "shopify://shop_images/Hero.png",
+        "hero_height": 780,
+        "overlay_opacity": 30,
+        "heading": "A Curated World of Art, Jewellery & Clothing.",
+        "description": "",
+        "primary_button_label": "",
+        "primary_button_link": "",
+        "secondary_button_label": "Enter the Studio",
+        "secondary_button_link": ""
+      }
+    },
     "about_company_NPNHGQ": {
       "type": "about-company",
       "name": "About Brand Story",
@@ -143,6 +158,7 @@
     }
   },
   "order": [
+    "mobolaji_hero_9aHrzB",
     "about_company_NPNHGQ",
     "categories_sections_i9hLdP",
     "custom_featured_collection_AW8RnK",
