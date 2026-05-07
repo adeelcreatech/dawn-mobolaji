@@ -41,8 +41,9 @@ sticky-header.header-wrapper {
 }
 
 sticky-header.header-wrapper.scrolled {
-    background: #e7d8c7;
-    box-shadow: 0 2px 20px #c1b4b4;
+    background: #3f3a36de;
+    backdrop-filter: blur(5px);
+    -webkit-backdrop-filter: blur(5px);
 }
 
 .btn-clean {
