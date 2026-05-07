@@ -9,22 +9,6 @@
  */
 {
   "sections": {
-    "lanai_hero_CDYPij": {
-      "type": "lanai-hero",
-      "name": "Lanai Header",
-      "settings": {
-        "video_url": "",
-        "poster_image": "shopify://shop_images/Hero.png",
-        "hero_height": 740,
-        "overlay_opacity": 30,
-        "heading": "A Curated World of Art, Jewellery & Clothing.",
-        "description": "",
-        "primary_button_label": "",
-        "primary_button_link": "#",
-        "secondary_button_label": "Enter the Studio",
-        "secondary_button_link": "#"
-      }
-    },
     "about_company_NPNHGQ": {
       "type": "about-company",
       "name": "About Brand Story",
@@ -159,7 +143,6 @@
     }
   },
   "order": [
-    "lanai_hero_CDYPij",
     "about_company_NPNHGQ",
     "categories_sections_i9hLdP",
     "custom_featured_collection_AW8RnK",
