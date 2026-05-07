@@ -200,7 +200,7 @@
     {%- assign logo_alt = settings.logo.alt | default: shop.name | escape -%}
     {{
       settings.logo
-      | image_url: width: 2000
+      | image_url: width: 200
       | image_tag:
         class: 'header__heading-logo',
         alt: logo_alt,
