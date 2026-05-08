@@ -46,6 +46,13 @@ sticky-header.header-wrapper.scrolled {
     -webkit-backdrop-filter: blur(5px);
 }
 
+details[open]>.search-modal {
+    background: rebeccapurple;
+    background: #3f3a36de;
+    backdrop-filter: blur(5px);
+    -webkit-backdrop-filter: blur(5px);
+}
+
 .btn-clean {
   font-family: 'Inter', sans-serif;
   font-size: 18px;
