@@ -14,7 +14,7 @@
       "name": "Mobolaji Inner Banner",
       "settings": {
         "image_bg": "shopify://shop_images/Hero.png",
-        "heading": "Cart",
+        "heading": "Your Bag",
         "txt_color": "#f6f1e8"
       }
     },
