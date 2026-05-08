@@ -686,8 +686,11 @@ footer {
     line-height: 55px;
 }
 .mobolaji-inner-banner h1.inner-title {
-    font-size: 35px;
-    line-height: 45px;
+    font-size: 55px;
+    line-height: 65px;
+}
+footer .footer-main .footer-brand {
+    width: 100%;
 }
 
 }
