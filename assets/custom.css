@@ -36,6 +36,11 @@ header.header {
     align-items: flex-start !important;
 }
 
+.header-wrapper .header--middle-center a.header__heading-link {
+    margin-top: -20px;
+    padding: 0 !important;
+}
+
 .header-wrapper {
     position: absolute;
     left: 0;
