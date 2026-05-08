@@ -202,12 +202,12 @@ sticky-header.header-wrapper header.header .header__icons span.svg-wrapper svg {
 /* Start Featured Collection CSS */
 
 .mobolaji-inner-banner {
-    height: 400px;
+    height: 450px;
     display: flex;
     align-items: flex-end;
     justify-content: center;
     text-align: center;
-    padding-bottom: 60px;
+    padding-bottom: 50px;
 }
 
 
