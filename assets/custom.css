@@ -32,6 +32,10 @@ p {
   font-weight: 400;
 }
 
+header.header {
+    align-items: flex-start !important;
+}
+
 .header-wrapper {
     position: absolute;
     left: 0;
