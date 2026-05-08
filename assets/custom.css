@@ -32,7 +32,7 @@ p {
   font-weight: 400;
 }
 
-sticky-header.header-wrapper {
+.header-wrapper {
     position: absolute;
     left: 0;
     right: 0;
