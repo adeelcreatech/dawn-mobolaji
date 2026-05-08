@@ -85,7 +85,7 @@
       "type": "custom-featured-collection",
       "name": "Custom Collection",
       "settings": {
-        "heading": "Featured Collection",
+        "heading": "Featured Products",
         "collection": "shop",
         "products_to_show": 8,
         "show_cta": true,
